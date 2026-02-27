@@ -1,42 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TP1.Models
 {
     public class Driver
     {
-        public Guid Id { get; set; }
+        [Key]
+        public Guid Id { get; set; } = Guid.NewGuid();
 
-        public required string LastName { get; set; }
+        [Required(ErrorMessage = "Le nom est obligatoire.")]
+        [StringLength(30, MinimumLength = 2)]
+        [Display(Name = "Nom")]
+        public string LastName { get; set; }
 
-        public required string FirstName { get; set; }
+        [Required(ErrorMessage = "Le prénom est obligatoire.")]
+        [StringLength(30, MinimumLength = 2)]
+        [Display(Name = "Prénom")]
+        public string FirstName { get; set; }
 
-        public required string EmailAdress { get; set; }
+        [Required]
+        [EmailAddress(ErrorMessage = "Format de courriel invalide.")]
+        [Display(Name = "Courriel")]
+        public string EmailAdress { get; set; }
 
-        public required string PhoneNumber { get; set; }
-         
-        public required string DriverLicenceNumber { get; set; } 
+        [Required]
+        [Phone(ErrorMessage = "Format de téléphone invalide.")]
+        [Display(Name = "Téléphone")]
+        public string PhoneNumber { get; set; }
 
-        public static Driver Create(
-            string firstname,
-            string lastname,
-            string emailadress,
-            string phonenumber,
-            string driverlicensenumber)
-        {
-            return new Driver
-            {
-                Id = Guid.NewGuid(),
-                FirstName = firstname,
-                LastName = lastname,
-                EmailAdress = emailadress,
-                PhoneNumber = phonenumber,
-                DriverLicenceNumber = driverlicensenumber
-            };
-        }
+        [Required(ErrorMessage = "Le numéro de permis est obligatoire.")]
+        [RegularExpression(@"^[A-Z]\d{4}-\d{6}-\d{2}$", ErrorMessage = "Format invalide (Ex: A1234-121299-12).")]
+        [Display(Name = "Numéro de permis")]
+        public string DriverLicenceNumber { get; set; }
 
+        public Guid AddressId { get; set; }
+        [ForeignKey("AddressId")]
+        public virtual Address Address { get; set; }
+
+        // Propriété de navigation pour les locations
+        public virtual ICollection<Location>? Locations { get; set; }
     }
 }

@@ -1,41 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace TP1.Models
-
-public class Address
 {
-    public Guid Id { get; set; }
-
-    public required string StreetNumber { get; set; }
-
-    public required string CityName { get; set; }
-
-    public required string PostalCode { get; set; }
-
-    public static Address Create(
-        string streetnumber,
-        string cityname,
-        string postalcode
-        )
+    public class Address
     {
-        //Validations des paramètres (invariants)
+        [Key]
+        public Guid Id { get; set; } = Guid.NewGuid();
 
-        ArgumentException.ThrowIfNullOrWhiteSpace(streetnumber, nameof(StreetNumber));
-        ArgumentException.ThrowIfNullOrWhiteSpace(cityname, nameof(CityName));
-        ArgumentException.ThrowIfNullOrWhiteSpace(postalcode, nameof(PostalCode));
+        [Required(ErrorMessage = "Le numéro civique est obligatoire.")]
+        [RegularExpression(@"^\d+$", ErrorMessage = "Le numéro civique doit être un entier positif.")]
+        [Display(Name = "Numéro civique")]
+        public string StreetNumber { get; set; }
 
-        return new Address
-        {
-            Id = Guid.NewGuid(),
-            StreetNumber = streetnumber,
-            CityName = cityname,
-            PostalCode = postalcode
-        };
+        [Required(ErrorMessage = "La rue est obligatoire.")]
+        [StringLength(30, MinimumLength = 5, ErrorMessage = "Le nom de rue doit avoir entre 5 et 30 caractères.")]
+        [Display(Name = "Rue")]
+        public string StreetName { get; set; }
 
+        [Required(ErrorMessage = "La ville est obligatoire.")]
+        [StringLength(30, MinimumLength = 5, ErrorMessage = "La ville doit avoir entre 5 et 30 caractères.")]
+        [Display(Name = "Ville")]
+        public string CityName { get; set; }
+
+        [Required]
+        public string Province { get; set; } = "Québec"; // Toujours Québec
+
+        [Required]
+        public string Country { get; set; } = "Canada"; // Toujours Canada
+
+        [Required(ErrorMessage = "Le code postal est obligatoire.")]
+        [RegularExpression(@"^[A-Z]\d[A-Z] ?\d[A-Z]\d$", ErrorMessage = "Format invalide (A0A 0A0).")]
+        [Display(Name = "Code postal")]
+        public string PostalCode { get; set; }
     }
-
 }

@@ -1,72 +1,58 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace TP1.Models
 {
     public class Car
     {
+        [Key]
         public Guid Id { get; set; }
 
-        public required string Nickname { get; set; }
+        [Required(ErrorMessage = "Le surnom est obligatoire.")]
+        [StringLength(20, MinimumLength = 5, ErrorMessage = "Le surnom doit avoir entre 5 et 20 caractères.")]
+        public string Nickname { get; set; } // Exemple: Car#5
 
-        public required bool Status{ get; set; }
+        [Required]
+        public bool Status { get; set; } // Activée ou Désactivée
 
-        public required bool Availability{ get; set; }
+        [Required]
+        public bool Availability { get; set; } // Disponible ou Indisponible
 
-        public required bool State { get; set; }
+        [Required]
+        public bool State { get; set; } // Neuf ou Usagé
 
-        public required string SerialNumber { get; set; }
+        [Required(ErrorMessage = "Le NIV est obligatoire.")]
+        [RegularExpression(@"^[A-Z0-9]{17}$", ErrorMessage = "Le format du NIV est invalide.")]
+        public string SerialNumber { get; set; } // Format standard NIV
 
-        public required string Registration{ get; set; }
+        [Required]
+        [StringLength(7, MinimumLength = 6)]
+        public string Registration { get; set; } // Immatriculation
 
-        public required string  CarBrand{ get; set; }
+        [Required]
+        [StringLength(20, MinimumLength = 3)]
+        public string CarBrand { get; set; } // Marque
 
-        public required string CarModel{ get; set; }
+        [Required]
+        [StringLength(20, MinimumLength = 3)]
+        public string CarModel { get; set; } // Modèle
 
-        public required int Year { get; set; }
+        [Required]
+        [Range(2000, 2027, ErrorMessage = "L'année doit être entre 2000 et 2027.")]
+        public int Year { get; set; } // Entre 2000 et l'année prochaine
 
-        public required string Color{ get; set; }
+        [Required]
+        [StringLength(20, MinimumLength = 3)]
+        public string Color { get; set; } // Couleur
 
-        public  required int Mileage{ get; set; }
+        [Range(0, int.MaxValue)]
+        public int Mileage { get; set; } // Entier positif
 
-        public required decimal EstimatedValue { get; set; }
+        [Range(0, (double)decimal.MaxValue)]
+        [DataType(DataType.Currency)]
+        public decimal EstimatedValue { get; set; } // Nombre décimal positif
 
-        public static Car Create(
-            string nickname,
-            bool status,
-            bool availability,
-            bool state,
-            string serialnumber,
-            string registration,
-            string carbrand,
-            string carmodel,
-            int year,
-            string color,
-            int mileage,
-            decimal estimatedvalue)
-        {
-            return new Car
-            {
-                Id = Guid.NewGuid(),
-                Nickname = nickname,
-                Status = status,
-                Availability = availability,
-                State = state,
-                SerialNumber = serialnumber,
-                Registration = registration,
-                CarBrand = carbrand,
-                CarModel = carmodel,
-                Year = year,
-                Color = color,
-                Mileage = mileage,
-                EstimatedValue = estimatedvalue
-            };
-        }
+
+        public int? BranchId { get; set; }
+        public virtual Branch Branch { get; set; }
     }
 }
