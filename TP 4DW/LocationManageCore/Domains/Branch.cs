@@ -23,5 +23,6 @@ namespace LocationManageCore.Domains
                 Status = status,
                 Name = name
             };
+        }
     }
 }

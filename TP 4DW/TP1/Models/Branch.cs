@@ -1,20 +1,28 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace TP1.Models
 {
     public class Branch
     {
-        public int Id { get; set; }
+        //Propriétés métiers 
+        public Guid Id { get; private set; }
+        public required bool Status { get; set; }
+        public required string Name { get; set; }
 
-        [Required]
-        [StringLength(20, MinimumLength = 5)]
-        public string Name { get; set; }
-
-        public string Address { get; set; }
-
-        public bool IsActive { get; set; } = true;
-
-        // Propriétés de navigation
-        public virtual ICollection<Car> Cars { get; set; }
+        public static Branch Create(
+            bool status,
+            string name)
+        {
+            return new Branch
+            {
+                Id = Guid.NewGuid(),
+                Status = status,
+                Name = name
+            };
+        }
     }
 }
