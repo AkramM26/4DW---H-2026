@@ -19,5 +19,21 @@ namespace TP1.Models
 
         public virtual ICollection<Car>? Cars { get; set; }
         public virtual ICollection<ApplicationUser>? Employees { get; set; }
+
+        // Propriétés de navigation
+        public static Branch Create(bool status, string name)
+        {
+            return new Branch
+            {
+                Id = Guid.NewGuid(),
+                Status = status,
+                Name = name
+            };
+        }
+
+        protected Branch()
+        {
+            Id = Guid.NewGuid();
+        }
     }
 }
