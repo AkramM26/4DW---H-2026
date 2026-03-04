@@ -1,0 +1,70 @@
+﻿@model IEnumerable<TP1.Models.Location>
+@{
+    ViewData["Title"] = "Liste des Locations";
+}
+
+<h1 class="mb-4">Gestion des Locations</h1>
+
+@* Les locations courantes *@
+<div class="card border-primary mb-4">
+    <div class="card-header bg-primary text-white">
+        <h3 class="card-title mb-0">Locations Courantes</h3>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-hover mb-0">
+            <thead>
+                <tr>
+                    <th>Conducteur</th>
+                    <th>Voiture</th>
+                    <th>Début</th>
+                    <th>Fin Prévue</th>
+                    <th>Durée</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var loc in (List<TP1.Models.Location>)ViewBag.Courantes)
+                {
+                    <tr>
+                        <td>@loc.Driver.FirstName @loc.Driver.LastName</td>
+                        <td>@loc.Car.Nickname</td>
+                        <td>@loc.Opening.ToShortDateString()</td>
+                        <td>@loc.PlanedClosing.ToShortDateString()</td>
+                        <td>@((DateTime.Now - loc.Opening).Days) jour(s)</td>
+                        <td><a asp-action="Details" asp-route-id="@loc.Id" class="btn btn-sm btn-info">Consulter</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@* Locations passées *@
+<div class="card border-secondary">
+    <div class="card-header bg-secondary text-white">
+        <h3 class="card-title mb-0">Historique (Passées)</h3>
+    </div>
+    <table class="table table-hover mb-0">
+        <thead>
+            <tr>
+                <th>Conducteur</th>
+                <th>Voiture</th>
+                <th>Début</th>
+                <th>Fin Réelle</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var loc in (List<TP1.Models.Location>)ViewBag.Passees)
+            {
+                <tr>
+                    <td>@loc.Driver.FirstName @loc.Driver.LastName</td>
+                    <td>@loc.Car.Nickname</td>
+                    <td>@loc.Opening.ToShortDateString()</td>
+                    <td>@loc.OfficialClosing?.ToShortDateString()</td>
+                    <td><a asp-action="Details" asp-route-id="@loc.Id" class="btn btn-sm btn-outline-secondary">Détails</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

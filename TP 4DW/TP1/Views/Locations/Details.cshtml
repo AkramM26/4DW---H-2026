@@ -1,0 +1,39 @@
+﻿@model TP1.Models.Location
+@{
+    ViewData["Title"] = "Profil de la Location";
+}
+
+<h1>Profil de la Location</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card mb-3">
+            <div class="card-header"><h4>Conducteur</h4></div>
+            <div class="card-body">
+                <p><strong>Nom complet :</strong> @Model.Driver.FirstName @Model.Driver.LastName</p>
+                <p><strong>Permis de conduire :</strong> @Model.Driver.DriverLicenceNumber</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card mb-3">
+            <div class="card-header"><h4>Voiture</h4></div>
+            <div class="card-body">
+                <p><strong>Surnom :</strong> @Model.Car.Nickname</p>
+                <p><strong>Marque/Modèle :</strong> @Model.Car.CarBrand @Model.Car.CarModel</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header bg-light"><h4>Dates du dossier</h4></div>
+    <div class="card-body">
+        <p><strong>Ouverture :</strong> @Model.Opening.ToString("g")</p>
+        <p><strong>Fermeture planifiée :</strong> @Model.PlanedClosing.ToString("g")</p>
+        <p><strong>Fermeture réelle :</strong> @(Model.OfficialClosing?.ToString("g") ?? "Dossier ouvert")</p>
+    </div>
+</div>
+
+<a asp-action="Index" class="btn btn-secondary">Retour à la liste</a>
