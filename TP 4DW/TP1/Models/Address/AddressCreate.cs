@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TP1.Models
+namespace TP1.Models.Address
 {
-    public class Address
+    public class AddressCreate
     {
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();

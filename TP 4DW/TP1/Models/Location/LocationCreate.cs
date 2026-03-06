@@ -2,9 +2,9 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace TP1.Models
+namespace TP1.Models.Location
 {
-    public class Location
+    public class LocationCreate
     {
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();

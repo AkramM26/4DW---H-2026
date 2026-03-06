@@ -1,4 +1,5 @@
-﻿@model IEnumerable<TP1.Models.Location>
+﻿@using TP1.Models.Location
+@model IEnumerable<LocationCreate>
 @{
     ViewData["Title"] = "Liste des Locations";
 }
@@ -23,7 +24,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var loc in (List<TP1.Models.Location>)ViewBag.Courantes)
+                @foreach (var loc in (List<LocationCreate>)ViewBag.Courantes)
                 {
                     <tr>
                         <td>@loc.Driver.FirstName @loc.Driver.LastName</td>
@@ -55,7 +56,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var loc in (List<TP1.Models.Location>)ViewBag.Passees)
+            @foreach (var loc in (List<LocationCreate>)ViewBag.Passees)
             {
                 <tr>
                     <td>@loc.Driver.FirstName @loc.Driver.LastName</td>

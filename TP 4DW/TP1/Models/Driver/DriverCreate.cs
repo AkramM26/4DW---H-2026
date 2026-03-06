@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace TP1.Models
+namespace TP1.Models.Driver
 {
-    public class Driver
+    public class DriverCreate
     {
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();

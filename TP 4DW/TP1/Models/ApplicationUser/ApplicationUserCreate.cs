@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using TP1.Models.Branch;
 
-namespace TP1.Models
+namespace TP1.Models.ApplicationUser
 {
-    public class ApplicationUser : IdentityUser
+    public class ApplicationUserCreate : IdentityUser
     {
         // Lien avec la succursale
         public int? BranchId { get; set; }

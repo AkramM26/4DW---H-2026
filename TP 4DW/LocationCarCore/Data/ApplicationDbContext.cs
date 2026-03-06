@@ -10,10 +10,7 @@ namespace LocationManageCore.Data
     public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : DbContext(options)
     {
         public DbSet<Car> Cars { get; set; }
-
         public DbSet<Branch> Branches { get; set; }
-
-
         public DbSet<Driver> Drivers { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DbSet<Address> Addresses { get; set; }
