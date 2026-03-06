@@ -9,7 +9,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
     ?? "Data Source=app.db";
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlite(connectionString));
+    options.UseInMemoryDatabase("MaBasededonéées"));
 
 // 2. Services MVC de base
 builder.Services.AddControllersWithViews();
