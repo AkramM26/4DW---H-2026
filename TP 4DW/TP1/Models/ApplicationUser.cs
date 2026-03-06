@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using TP1.Models.Branch;
 
 namespace TP1.Models
 {
@@ -6,6 +7,8 @@ namespace TP1.Models
     {
         // Lien avec la succursale
         public int? BranchId { get; set; }
-        public virtual Branch Branch { get; set; }
+
+        public virtual BranchCreate Branch { get; set; }
+
     }
 }

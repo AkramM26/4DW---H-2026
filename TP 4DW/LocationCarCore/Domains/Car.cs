@@ -17,13 +17,14 @@ namespace LocationManageCore.Domains
         public Guid Id { get; set; }
         public required string CarBrand { get; set; }
         public required string CarModel { get; set; }
-        public required int Year { get; set; }
-        public required string Color { get; set; }
-        public required string SerialNumber { get; set; }
-        public required string Registration { get; set; }
-        public required int Mileage { get; set; }
+        public required int? Year { get; set; }
         public required string Nickname { get; set; }
-        public required decimal EstimatedValue { get; set; }
+        public required string SerialNumber { get; set; }
+        public required int? Mileage { get; set; }
+
+        public required string Color { get; set; }
+        public required string Registration { get; set; }
+        public required decimal? EstimatedValue { get; set; }
 
 
         //Not required elements
@@ -31,6 +32,10 @@ namespace LocationManageCore.Domains
         public  bool Status { get; set; }        
         public  bool Availability { get; set; }
         public  bool State { get; set; }
+
+
+        //public required int BranchId { get; set; }
+        //public required virtual Branch Branch { get; set; }
 
 
 

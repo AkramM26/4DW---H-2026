@@ -5,7 +5,7 @@ VisualStudioVersion = 17.14.36705.20
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TP1", "TP1\TP1.csproj", "{4E6FCC2E-8B0F-4A27-B3A8-AD08CAD203F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarLocationCore", "LocationCarCore\CarLocationCore.csproj", "{89CD05E3-2684-415D-850C-DF802400A277}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocationManagerCore", "LocationCarCore\LocationManagerCore.csproj", "{89CD05E3-2684-415D-850C-DF802400A277}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

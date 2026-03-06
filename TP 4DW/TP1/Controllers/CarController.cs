@@ -1,8 +1,8 @@
-﻿using LocationManageCore.Domains;
+﻿using LocationManageCore.Data;
+using LocationManageCore.Domains;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Drawing;
-using TP1.Data;
 using TP1.Models.Cars;
 
 namespace TP1.Controllers
@@ -32,8 +32,9 @@ namespace TP1.Controllers
             if (!ModelState.IsValid) // revoir les validations 
             {
                 return View(model);
-
             }
+
+
             var car = Car.Create(
                 model.CarBrand!,
                 model.CarModel!,
@@ -63,7 +64,10 @@ namespace TP1.Controllers
                     State = car.State,
                     SerialNumber = car.SerialNumber,
                     CarBrand = car.CarBrand,
+                    Color = car.Color,
                     CarModel = car.CarModel,
+                    Registration = car.Registration,
+                    Year = car.Year,
                     Mileage = car.Mileage,
                     EstimatedValue = car.EstimatedValue
                 }).ToListAsync();

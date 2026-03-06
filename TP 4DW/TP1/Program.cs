@@ -1,5 +1,5 @@
+using LocationManageCore.Data;
 using Microsoft.EntityFrameworkCore;
-using TP1.Data;
 using TP1.Models;
 
 var builder = WebApplication.CreateBuilder(args);

@@ -4,7 +4,6 @@ namespace TP1.Models.Cars
 {
     public class CarCreate
     { 
-        public required Guid Id { get; set; }
 
         [Required(ErrorMessage = "Le surnom est obligatoire.")]
         [StringLength(20, MinimumLength = 5, ErrorMessage = "Le surnom doit avoir entre 5 et 20 caractères.")]
@@ -50,7 +49,7 @@ namespace TP1.Models.Cars
         public required decimal EstimatedValue { get; set; } 
 
 
-        public required int? BranchId { get; set; }
-        public required virtual Branch Branch { get; set; }
+        //public   int BranchId { get; set; }
+        //public  virtual Branch Branch { get; set; }
     }
 }

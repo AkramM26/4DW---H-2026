@@ -1,12 +1,11 @@
 ﻿using LocationManageCore.Domains;
 using System.ComponentModel.DataAnnotations;
 
-namespace TP1.Models
+namespace TP1.Models.Branch
 {
-    public class Branch
+    public class BranchCreate
     {
-        [Key]
-        public Guid Id { get; set; } = Guid.NewGuid();
+
 
         [Required]
         [Display(Name = "Active")]
@@ -18,23 +17,9 @@ namespace TP1.Models
         public string Name { get; set; }
 
 
+        // Propriétés de navigation
         public virtual ICollection<Car>? Cars { get; set; }
         public virtual ICollection<ApplicationUser>? Employees { get; set; }
 
-        // Propriétés de navigation
-        public static Branch Create(bool status, string name)
-        {
-            return new Branch
-            {
-                Id = Guid.NewGuid(),
-                Status = status,
-                Name = name
-            };
-        }
-
-        protected Branch()
-        {
-            Id = Guid.NewGuid();
-        }
     }
 }
