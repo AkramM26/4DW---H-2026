@@ -1,0 +1,102 @@
+﻿@model LocationManagerCore.Domains.Driver
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Driver</h4>
+    <hr />
+
+    <dl class="row">
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EmailAdress)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EmailAdress)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PhoneNumber)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DriverLicenceNumber)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DriverLicenceNumber)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AddressId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AddressId)
+        </dd>
+
+    </dl>
+
+    <hr />
+
+    <h4>Location associée</h4>
+
+    @if (Model.Locations != null && Model.Locations.Any())
+    {
+        var loc = Model.Locations.First();
+
+        <dl class="row">
+
+            <dt class="col-sm-2">Voiture</dt>
+            <dd class="col-sm-10">@loc.Car?.Nickname</dd>
+
+            <dt class="col-sm-2">Date début</dt>
+            <dd class="col-sm-10">@loc.Opening.ToString("g")</dd>
+
+            <dt class="col-sm-2">Date fin prévue</dt>
+            <dd class="col-sm-10">@loc.PlanedClosing.ToString("g")</dd>
+
+            <dt class="col-sm-2">Date fin réelle</dt>
+            <dd class="col-sm-10">
+                @(loc.OfficialClosing?.ToString("g") ?? "Location active")
+            </dd>
+
+        </dl>
+    }
+    else
+    {
+        <p>Aucune location associée.</p>
+    }
+
+</div>
+
+<div>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    <a asp-action="Index">Back to List</a>
+</div>
