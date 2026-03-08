@@ -65,7 +65,7 @@ public class BranchController(ApplicationDbContext context) : Controller
             return NotFound();
         }
 
-        return View(branch);
+        return View(branch.Cars.ToList()); // c'est ici que le type est passé en paramètre
     }
 
 

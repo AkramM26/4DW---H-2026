@@ -37,7 +37,7 @@ namespace LocationManageCore.Domains
 
         //Propriétés de navigation 
 
-        public  int BranchId { get; set; }
+        public  Guid BranchId { get; set; }
         public  virtual Branch Branch { get; set; }
 
 
