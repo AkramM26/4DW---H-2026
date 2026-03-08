@@ -2,7 +2,8 @@
 using LocationManagerCore.Domains;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TP1.Models.Branch;
+using TP1.Models.Branchs;
+
 
 namespace TP1.Controllers;
 
@@ -38,6 +39,8 @@ public class BranchController(ApplicationDbContext context) : Controller
         return RedirectToAction(nameof(List));
     }
 
+    [HttpGet]
+
     public async Task<IActionResult> List()
     {
         var branch = await Context.Branches
@@ -47,6 +50,21 @@ public class BranchController(ApplicationDbContext context) : Controller
                 Name = branch.Name,
                 Status = branch.Status
             }).ToListAsync();
+        return View(branch);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Details(Guid id)
+    {
+        var branch = await Context.Branches
+            .Include(b=> b.Cars)
+            .FirstOrDefaultAsync(b => b.Id == id);
+
+        if (branch == null)
+        {
+            return NotFound();
+        }
+
         return View(branch);
     }
 

@@ -1,7 +1,7 @@
 ﻿using LocationManageCore.Domains;
 using System.ComponentModel.DataAnnotations;
 
-namespace TP1.Models.Branch
+namespace TP1.Models.Branchs
 {
     public class BranchCreate
     {
@@ -16,10 +16,6 @@ namespace TP1.Models.Branch
         [Display(Name = "Nom de la succursale")]
         public string Name { get; set; }
 
-
-        // Propriétés de navigation
-        public virtual ICollection<Car>? Cars { get; set; }
-        public virtual ICollection<ApplicationUser>? Employees { get; set; }
 
     }
 }

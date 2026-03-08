@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace TP1.Models.Note
+namespace TP1.Models.Notes
 {
     public class NoteCreate
     {

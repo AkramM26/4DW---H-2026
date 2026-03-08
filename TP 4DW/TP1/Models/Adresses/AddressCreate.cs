@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TP1.Models.Address
+namespace TP1.Models.Adresses
 {
     public class AddressCreate
     {

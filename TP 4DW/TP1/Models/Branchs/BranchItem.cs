@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TP1.Models.Branch
+namespace TP1.Models.Branchs
 {
     public class BranchItem
     {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using TP1.Models.Branch;
+using TP1.Models.Branchs;
 
-namespace TP1.Models.ApplicationUser
+namespace TP1.Models.ApplicationUsers
 {
     public class ApplicationUserCreate : IdentityUser
     {

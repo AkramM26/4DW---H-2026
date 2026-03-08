@@ -1,55 +1,56 @@
-﻿using System.ComponentModel.DataAnnotations;
-using LocationManagerCore.Domains;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace TP1.Models.Cars
 {
-    public class CarCreate
-    { 
+    public class CarEdit
+    {
+
+        [HiddenInput]
+        public  Guid Id { get; set; }
 
         [Required(ErrorMessage = "Le surnom est obligatoire.")]
         [StringLength(20, MinimumLength = 5, ErrorMessage = "Le surnom doit avoir entre 5 et 20 caractères.")]
-        public required string Nickname { get; set; } 
+        public required string Nickname { get; set; }
 
         [Required]
-        public required bool Status { get; set; } 
+        public required bool Status { get; set; }
 
         [Required]
         public required bool Availability { get; set; }
 
         [Required]
-        public required bool State { get; set; } 
+        public required bool State { get; set; }
 
         [Required(ErrorMessage = "Le NIV est obligatoire.")]
         [RegularExpression(@"^[A-Z0-9]{17}$", ErrorMessage = "Le format du NIV est invalide.")]
-        public required string SerialNumber { get; set; } 
+        public required string SerialNumber { get; set; }
         [Required]
         [StringLength(7, MinimumLength = 6)]
-        public required string Registration { get; set; } 
+        public required string Registration { get; set; }
 
         [Required]
         [StringLength(20, MinimumLength = 3)]
-        public required string CarBrand { get; set; } 
+        public required string CarBrand { get; set; }
 
         [Required]
         [StringLength(20, MinimumLength = 3)]
-        public required string CarModel { get; set; } 
+        public required string CarModel { get; set; }
 
         [Required]
         [Range(2000, 2027, ErrorMessage = "L'année doit être entre 2000 et 2027.")]
-        public required int Year { get; set; } 
+        public required int? Year { get; set; }
 
         [Required]
         [StringLength(20, MinimumLength = 3)]
-        public required string Color { get; set; } 
+        public required string Color { get; set; }
 
         [Range(0, int.MaxValue)]
-        public required int Mileage { get; set; } 
+        public required int? Mileage { get; set; }
 
         [Range(0, (double)decimal.MaxValue)]
         [DataType(DataType.Currency)]
-        public required decimal EstimatedValue { get; set; }
-
-
+        public required decimal? EstimatedValue { get; set; }
 
     }
 }

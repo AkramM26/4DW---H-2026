@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LocationManagerCore.Domains;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -34,8 +35,10 @@ namespace LocationManageCore.Domains
         public  bool State { get; set; }
 
 
-        //public required int BranchId { get; set; }
-        //public required virtual Branch Branch { get; set; }
+        //Propriétés de navigation 
+
+        public  int BranchId { get; set; }
+        public  virtual Branch Branch { get; set; }
 
 
 

@@ -1,7 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using LocationManagerCore.Domains;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace TP1.Models.Driver
+namespace TP1.Models.Drivers
 {
     public class DriverCreate
     {

@@ -1,8 +1,9 @@
 ﻿using LocationManageCore.Domains;
+using LocationManagerCore.Domains;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace TP1.Models.Location
+namespace TP1.Models.Locations
 {
     public class LocationCreate
     {
