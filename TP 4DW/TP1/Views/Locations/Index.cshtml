@@ -1,12 +1,19 @@
-﻿using LocationManagerCore.Domains;
-
-@using TP1.Models.Locations
-@model IEnumerable<LocationCreate>
+﻿@using LocationManagerCore.Domains
+@model IEnumerable<Location>
 @{
     ViewData["Title"] = "Liste des Locations";
+    var erreur = ViewData["Erreur"] as string;
 }
 
 <h1 class="mb-4">Gestion des Locations</h1>
+
+@if (!string.IsNullOrEmpty(erreur))
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @erreur
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
 
 @* Les locations courantes *@
 <div class="card border-primary mb-4">
@@ -26,7 +33,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var loc in (List<LocationCreate>)ViewBag.Courantes)
+                @foreach (var loc in (List<Location>)ViewBag.Courantes)
                 {
                     <tr>
                         <td>@loc.Driver.FirstName @loc.Driver.LastName</td>
@@ -58,7 +65,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var loc in (List<LocationCreate>)ViewBag.Passees)
+            @foreach (var loc in (List<Location>)ViewBag.Passees)
             {
                 <tr>
                     <td>@loc.Driver.FirstName @loc.Driver.LastName</td>

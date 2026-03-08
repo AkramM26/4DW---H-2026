@@ -4,6 +4,17 @@
     ViewData["Title"] = "Index";
 }
 
+@{
+    var erreur = ViewData["Erreur"] as string;
+}
+
+@if (!string.IsNullOrEmpty(erreur))
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @erreur
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
 <h1>Index</h1>
 
 <p>
