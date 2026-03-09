@@ -22,7 +22,7 @@ namespace TP1.Models.Cars
 
         public required bool State { get; set; }
 
-        //public required int BranchId { get; set; }
+        public Guid BranchId { get; set; }
         //public required virtual Branch Branch { get; set; }
 
     }

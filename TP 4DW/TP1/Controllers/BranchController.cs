@@ -1,6 +1,7 @@
 ﻿using LocationManageCore.Data;
 using LocationManagerCore.Domains;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.Operations;
 using Microsoft.EntityFrameworkCore;
 using TP1.Models.Branches;
 using TP1.Models.Cars;
@@ -40,14 +41,17 @@ public class BranchController(ApplicationDbContext context) : Controller
         return RedirectToAction(nameof(List));
     }
 
+
     [HttpGet]
 
     public async Task<IActionResult> List()
     {
+
+
         var branch = await Context.Branches
             .Select(branch => new BranchItem
             {
-                Id = branch.Id,
+                BranchId = branch.BranchId,
                 Name = branch.Name,
                 Status = branch.Status
             }).ToListAsync();
@@ -55,18 +59,9 @@ public class BranchController(ApplicationDbContext context) : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Details(Guid id)
+    public async Task<IActionResult> Details(Guid branchid)
     {
-        var branch = await Context.Branches
-            .Include(b => b.Cars)
-            .FirstOrDefaultAsync(b => b.Id == id);
-
-        if (branch == null)
-        {
-            return NotFound();
-        }
-
-        return View(branch.Cars.ToList()); // c'est ici que le type est passé en paramètre
+        return RedirectToAction("List", "Car", new { branchId = branchid });
     }
 
 

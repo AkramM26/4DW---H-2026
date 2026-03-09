@@ -14,22 +14,21 @@ namespace TP1.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            return RedirectToAction(nameof(List));
+            return RedirectToAction(nameof(ListAll));
         }
 
 
 
         [HttpGet]
-        public IActionResult Create()
+        public IActionResult Create(Guid branchId)
         {
             return View();
         }
 
         [HttpPost]
-
-        public async Task<IActionResult> Create(CarCreate model)
+        public async Task<IActionResult> Create(CarCreate model, Guid branchId)
         {
-            if (!ModelState.IsValid) // revoir les validations 
+            if (!ModelState.IsValid)
             {
                 return View(model);
             }
@@ -44,15 +43,16 @@ namespace TP1.Controllers
                 model.Registration!,
                 model.Mileage!,
                 model.Nickname!,
-                model.EstimatedValue!
+                model.EstimatedValue!,
+                model.BrandId
                 );
             Context.Cars.Add(car);
             await Context.SaveChangesAsync();
-            return RedirectToAction(nameof(List));
+            return RedirectToAction(nameof(List), new { branchId = branchId });
         }
 
         [HttpGet]
-        public async Task<IActionResult> List()
+        public async Task<IActionResult> ListAll()
         {
             var cars = await Context.Cars
                 .Select(car => new CarItem
@@ -75,7 +75,23 @@ namespace TP1.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Edit(Guid id)
+        public async Task<IActionResult> List(Guid branchId)
+        {
+            var branch = await Context.Branches
+                .Include(b => b.Cars)
+                .FirstOrDefaultAsync(b => b.BranchId == branchId);
+
+            if (branch == null)
+            {
+                return NotFound();
+            }
+            ViewBag.BranchId = branchId;
+
+            return View(branch.Cars.ToList()); 
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(Guid id, Guid branchId)
         {
             var car = await Context.Cars.FindAsync(id);
 
@@ -98,8 +114,7 @@ namespace TP1.Controllers
                 EstimatedValue = car.EstimatedValue,
                 Year = car.Year,
                 Mileage = car.Mileage
-                //CarBrand= car.CarBrand,
-                //CarModel=car.CarModel
+
 
 
             };
@@ -107,7 +122,7 @@ namespace TP1.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(CarEdit model)
+        public async Task<IActionResult> Edit(CarEdit model, Guid branchId)
         {
             if (!ModelState.IsValid)
             {
@@ -137,7 +152,7 @@ namespace TP1.Controllers
 
             await Context.SaveChangesAsync();
 
-            return RedirectToAction(nameof(List));
+            return RedirectToAction(nameof(List), new { branchId = branchId });
         }
 
         [HttpGet]
@@ -164,15 +179,14 @@ namespace TP1.Controllers
                 EstimatedValue = car.EstimatedValue,
                 Year = car.Year,
                 Mileage = car.Mileage,
-                //CarBrand = car.CarBrand,
-                //CarModel = car.CarModel
+
 
             };
             return View(model);
         }
 
         [HttpGet]
-        public async Task<IActionResult> Delete(Guid id)
+        public async Task<IActionResult> Delete(Guid id, Guid branchId)
         {
             var contact = await Context.Cars.FindAsync(id);
 
@@ -184,7 +198,8 @@ namespace TP1.Controllers
             Context.Cars.Remove(contact);
             await Context.SaveChangesAsync();
 
-            return RedirectToAction(nameof(List));
+            return RedirectToAction(nameof(List), new { branchId = branchId });
+
         }
 
 

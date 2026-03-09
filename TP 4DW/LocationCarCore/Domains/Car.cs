@@ -55,7 +55,8 @@ namespace LocationManageCore.Domains
             string registration,
             int mileage,
             string nickname,
-            decimal estimatedvalue)
+            decimal estimatedvalue,
+            Guid brandid)
         {
             return new Car
             {
@@ -68,7 +69,8 @@ namespace LocationManageCore.Domains
                 Registration = registration,
                 Mileage = mileage,
                 Nickname = nickname,
-                EstimatedValue = estimatedvalue
+                EstimatedValue = estimatedvalue,
+                BranchId = brandid
             };
         }
     }

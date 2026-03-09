@@ -9,7 +9,7 @@ namespace LocationManagerCore.Domains
 {
     public class Branch
     {
-        public Guid Id { get; set; }
+        public Guid BranchId { get; set; }
         public required bool Status { get; set; }
         public required string Name { get; set; }
 
@@ -24,7 +24,7 @@ namespace LocationManagerCore.Domains
         {
             return new Branch
             {
-                Id = Guid.NewGuid(),
+                BranchId = Guid.NewGuid(),
                 Status = status,
                 Name = name
             };

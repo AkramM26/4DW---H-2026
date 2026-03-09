@@ -1,9 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace TP1.Models.Cars
 {
     public class CarDetails
+
     {
+        [HiddenInput]
+        public Guid Id { get; set; }
+
         [Required(ErrorMessage = "Le surnom est obligatoire.")]
         [StringLength(20, MinimumLength = 5, ErrorMessage = "Le surnom doit avoir entre 5 et 20 caractères.")]
         public required string Nickname { get; set; }

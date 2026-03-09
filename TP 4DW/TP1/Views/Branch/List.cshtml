@@ -44,9 +44,9 @@
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                    @Html.ActionLink("Liste de voitures", "Details", new { id = item.Id }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                    @Html.ActionLink("Edit", "Edit", new { branchId = item.BranchId }) |
+                    @Html.ActionLink("Liste de voitures", "List", "Car", new { branchId = item.BranchId }) |
+                    @Html.ActionLink("Delete", "Delete", new { branchId = item.BranchId })
             </tr>
         }
     </tbody>
