@@ -1,10 +1,13 @@
-﻿@model IEnumerable<LocationManageCore.Domains.Car>
-@*c'est ici que le type attendu est passé en paramètre*@
+﻿@*c'est ici que le type attendu est passé en paramètre*@
 @* @model IEnumerable<TP1.Models.Cars.CarItem>  c'était la mauvais ligne *@ 
+@model IEnumerable<LocationManageCore.Domains.Car>
+
+
+@{
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>Liste de voitures </h1>
 
 <p>
     <a asp-action="Create">Create New</a>

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TP1.Models.Branchs.BranchItem>
+﻿@model IEnumerable<TP1.Models.Branches.BranchItem>
 
 @{
     ViewData["Title"] = "List";
@@ -39,7 +39,7 @@
                 </td>
                 <td>
                     @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                    @Html.ActionLink("Liste de voitures", "Details", new { id = item.Id }) |
                     @Html.ActionLink("Delete", "Delete", new { id = item.Id })
             </tr>
         }

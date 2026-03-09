@@ -1,7 +1,7 @@
 ﻿using LocationManageCore.Domains;
 using System.ComponentModel.DataAnnotations;
 
-namespace TP1.Models.Branchs
+namespace TP1.Models.Branches
 {
     public class BranchCreate
     {

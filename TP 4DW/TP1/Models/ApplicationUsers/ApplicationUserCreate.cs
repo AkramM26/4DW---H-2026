@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using TP1.Models.Branchs;
+using TP1.Models.Branches;
 
 namespace TP1.Models.ApplicationUsers
 {

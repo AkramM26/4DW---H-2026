@@ -2,7 +2,8 @@
 using LocationManagerCore.Domains;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TP1.Models.Branchs;
+using TP1.Models.Branches;
+using TP1.Models.Cars;
 
 
 namespace TP1.Controllers;
@@ -34,7 +35,7 @@ public class BranchController(ApplicationDbContext context) : Controller
         var branch = Branch.Create(
             model.Status,
             model.Name);
-        Context.Branches.Add(branch);          
+        Context.Branches.Add(branch);
         await Context.SaveChangesAsync();
         return RedirectToAction(nameof(List));
     }
@@ -57,7 +58,7 @@ public class BranchController(ApplicationDbContext context) : Controller
     public async Task<IActionResult> Details(Guid id)
     {
         var branch = await Context.Branches
-            .Include(b=> b.Cars)
+            .Include(b => b.Cars)
             .FirstOrDefaultAsync(b => b.Id == id);
 
         if (branch == null)
@@ -66,6 +67,62 @@ public class BranchController(ApplicationDbContext context) : Controller
         }
 
         return View(branch.Cars.ToList()); // c'est ici que le type est passé en paramètre
+    }
+
+
+    [HttpGet]
+    public async Task<IActionResult> Edit(Guid id)
+    {
+        var branch = await Context.Branches.FindAsync(id);
+
+        if (branch is null)
+        {
+            return NotFound();
+        }
+
+        var model = new BranchEdit
+
+        {
+            Status = branch.Status,
+            Name = branch.Name
+        };
+        return View(model);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Edit(BranchEdit model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        var branch = await Context.Branches.FindAsync(model.Id);
+        if (branch is null)
+        {
+            return NotFound();
+        }
+
+        branch.Status = model.Status;
+        branch.Name = model.Name;
+        await Context.SaveChangesAsync();
+        return RedirectToAction(nameof(List));
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        var branch = await Context.Branches.FindAsync(id);
+
+        if (branch is null)
+        {
+            return NotFound();
+        }
+
+        Context.Branches.Remove(branch);
+        await Context.SaveChangesAsync();
+        return RedirectToAction(nameof(List));
+
     }
 
 
