@@ -9,13 +9,14 @@ namespace TP1.Models.Drivers
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();
 
-        [Required(ErrorMessage = "Le nom est obligatoire.")]
-        [StringLength(30, MinimumLength = 2)]
+        [StringLength(50, MinimumLength = 3, ErrorMessage = "Le nom doit avoir entre 3 et 50 caractères.")]
+        [RegularExpression(@"^[a-zA-ZÀ-ÿ\s\-]*$", ErrorMessage = "Le nom ne doit contenir que des lettres.")]
         [Display(Name = "Nom")]
         public string LastName { get; set; }
 
         [Required(ErrorMessage = "Le prénom est obligatoire.")]
-        [StringLength(30, MinimumLength = 2)]
+        [StringLength(30, MinimumLength = 3, ErrorMessage = "Le prénom doit avoir entre 3 et 30 caractères.")]
+        [RegularExpression(@"^[a-zA-ZÀ-ÿ\s\-]*$", ErrorMessage = "Le prénom ne doit contenir que des lettres.")]
         [Display(Name = "Prénom")]
         public string FirstName { get; set; }
 
@@ -24,8 +25,9 @@ namespace TP1.Models.Drivers
         [Display(Name = "Courriel")]
         public string EmailAdress { get; set; }
 
-        [Required]
-        [Phone(ErrorMessage = "Format de téléphone invalide.")]
+        [Required(ErrorMessage = "Le numéro de téléphone est obligatoire.")]
+        [RegularExpression(@"^(\(\d{3}\)\s\d{3}-\d{4}|\d{3}-\d{3}-\d{4}|\d{10})$",
+            ErrorMessage = "Formats acceptés : (555) 555-5555, 555-555-5555 ou 5555555555.")]
         [Display(Name = "Téléphone")]
         public string PhoneNumber { get; set; }
 

@@ -8,17 +8,19 @@ namespace TP1.Models.Adresses
         public Guid Id { get; set; } = Guid.NewGuid();
 
         [Required(ErrorMessage = "Le numéro civique est obligatoire.")]
-        [RegularExpression(@"^\d+$", ErrorMessage = "Le numéro civique doit être un entier positif.")]
+        [Range(1, int.MaxValue, ErrorMessage = "Le numéro civique doit être un entier positif.")]
         [Display(Name = "Numéro civique")]
         public string StreetNumber { get; set; }
 
         [Required(ErrorMessage = "La rue est obligatoire.")]
         [StringLength(30, MinimumLength = 5, ErrorMessage = "Le nom de rue doit avoir entre 5 et 30 caractères.")]
+        [RegularExpression(@"^[a-zA-ZÀ-ÿ\s\-]*$", ErrorMessage = "La rue ne doit contenir que des lettres.")]
         [Display(Name = "Rue")]
         public string StreetName { get; set; }
 
         [Required(ErrorMessage = "La ville est obligatoire.")]
         [StringLength(30, MinimumLength = 5, ErrorMessage = "La ville doit avoir entre 5 et 30 caractères.")]
+        [RegularExpression(@"^[a-zA-ZÀ-ÿ\s\-]*$", ErrorMessage = "La ville ne doit contenir que des lettres.")]
         [Display(Name = "Ville")]
         public string CityName { get; set; }
 

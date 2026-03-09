@@ -21,25 +21,27 @@ namespace TP1.Models.Cars
 
         [Required(ErrorMessage = "Le NIV est obligatoire.")]
         [RegularExpression(@"^[A-Z0-9]{17}$", ErrorMessage = "Le format du NIV est invalide.")]
-        public required string SerialNumber { get; set; } 
-        [Required]
-        [StringLength(7, MinimumLength = 6)]
-        public required string Registration { get; set; } 
+        public required string SerialNumber { get; set; }
+        [Required(ErrorMessage = "L'immatriculation est obligatoire.")]
+        [RegularExpression(@"^[a-zA-Z0-9]{6,7}$", ErrorMessage = "L'immatriculation doit avoir 6 ou 7 caractères, sans espace.")]
+        public required string Registration { get; set; }
 
         [Required]
         [StringLength(20, MinimumLength = 3)]
-        public required string CarBrand { get; set; } 
+        [RegularExpression(@"^[a-zA-ZÀ-ÿ]*$", ErrorMessage = "La marque ne doit contenir que des lettres, sans espace.")]
+        public required string CarBrand { get; set; }
 
         [Required]
         [StringLength(20, MinimumLength = 3)]
+        [RegularExpression(@"^[a-zA-ZÀ-ÿ0-9]*$", ErrorMessage = "Le modèle ne doit pas contenir d'espace.")]
         public required string CarModel { get; set; } 
 
         [Required]
         [Range(2000, 2027, ErrorMessage = "L'année doit être entre 2000 et 2027.")]
-        public required int Year { get; set; } 
+        public required int Year { get; set; }
 
-        [Required]
         [StringLength(20, MinimumLength = 3)]
+        [RegularExpression(@"^[a-zA-ZÀ-ÿ]*$", ErrorMessage = "La couleur ne doit contenir que des lettres, sans espace.")]
         public required string Color { get; set; } 
 
         [Range(0, int.MaxValue)]

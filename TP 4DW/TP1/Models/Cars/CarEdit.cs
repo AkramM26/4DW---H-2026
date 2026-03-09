@@ -25,12 +25,13 @@ namespace TP1.Models.Cars
         [Required(ErrorMessage = "Le NIV est obligatoire.")]
         [RegularExpression(@"^[A-Z0-9]{17}$", ErrorMessage = "Le format du NIV est invalide.")]
         public required string SerialNumber { get; set; }
-        [Required]
-        [StringLength(7, MinimumLength = 6)]
+        [Required(ErrorMessage = "L'immatriculation est obligatoire.")]
+        [RegularExpression(@"^[a-zA-Z0-9]{6,7}$", ErrorMessage = "6 à 7 caractères alphanumériques sans espace.")]
         public required string Registration { get; set; }
 
         [Required]
         [StringLength(20, MinimumLength = 3)]
+        [RegularExpression(@"^[a-zA-ZÀ-ÿ]*$", ErrorMessage = "Lettres seulement, sans espace.")]
         public required string CarBrand { get; set; }
 
         [Required]
