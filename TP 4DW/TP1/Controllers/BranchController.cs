@@ -125,5 +125,23 @@ public class BranchController(ApplicationDbContext context) : Controller
 
     }
 
+    [HttpPost]
+    public IActionResult ToggleStatus(int id)
+    {
+        var branch = context.Branches.Find(id);
+        if (branch != null)
+        {
+            // Logique pour inverser l'état
+            branch.Status = !branch.Status;
+            context.SaveChanges();
 
+            TempData["Message"] = "Modification réussie";
+        }
+        else
+        {
+            TempData["Error"] = "Erreur lors de la modification";
+        }
+
+        return RedirectToAction(nameof(Index));
+    }
 }

@@ -10,7 +10,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Edit" id="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Id" class="control-label"></label>
@@ -28,9 +28,23 @@
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" id="btnSubmit" value="Save" class="btn btn-primary" />
             </div>
         </form>
+    </div>
+</div>
+
+<div class="modal fade" id="confirmToggleModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body" id="message">
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                <button type="button" class="btn btn-primary" id="btnConfirmer">Confirmer</button>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -39,5 +53,31 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(document).ready(function() {
+        var form = $('#Edit');
+        var message = "";
+        var status = $('#Status').prop('checked');
+
+            var modal = new bootstrap.Modal(document.getElementById('confirmToggleModal'));
+            var confirmation = false;
+
+            form.on('submit', function(e) {
+                if (status != $('#Status').prop('checked') && !confirmation) {
+                    e.preventDefault();
+                    message = ($('#Status').prop('checked')) ? "Voulez-vous vraiment activer la succursale ?" : "Voulez-vous vraiment désactiver la succursale ?";
+                    $('#message').text(message);
+                    modal.show();
+                }
+            });
+
+            $('#btnConfirmer').on('click', function() {
+                confirmation = true;
+                form.submit();
+            });
+        });
+    </script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
