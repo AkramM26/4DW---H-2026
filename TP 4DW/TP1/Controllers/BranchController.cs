@@ -81,7 +81,6 @@ public class BranchController(ApplicationDbContext context) : Controller
         }
 
         var model = new BranchEdit
-
         {
             Status = branch.Status,
             Name = branch.Name
@@ -92,21 +91,31 @@ public class BranchController(ApplicationDbContext context) : Controller
     [HttpPost]
     public async Task<IActionResult> Edit(BranchEdit model)
     {
-        if (!ModelState.IsValid)
+        try
         {
-            return View(model);
-        }
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
 
-        var branch = await Context.Branches.FindAsync(model.Id);
-        if (branch is null)
+            var branch = await Context.Branches.FindAsync(model.Id);
+            if (branch is null)
+            {
+                return NotFound();
+            }
+
+            branch.Status = model.Status;
+            branch.Name = model.Name;
+            await Context.SaveChangesAsync();
+            string action = model.Status ? "activée" : "désactivée";
+            TempData["Message"] = $"La succursale a été {action} avec succès.";
+            return RedirectToAction(nameof(List));
+        }
+        catch (Exception)
         {
-            return NotFound();
+            TempData["Erreur"] = "Erreur : Impossible de modifier l'état de la succursale.";
+            return RedirectToAction(nameof(List));
         }
-
-        branch.Status = model.Status;
-        branch.Name = model.Name;
-        await Context.SaveChangesAsync();
-        return RedirectToAction(nameof(List));
     }
 
     [HttpGet]

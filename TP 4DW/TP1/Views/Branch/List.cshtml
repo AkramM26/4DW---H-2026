@@ -3,7 +3,19 @@
 @{
     ViewData["Title"] = "List";
 }
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Message"]
+    </div>
+}
 
+@if (TempData["Erreur"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Erreur"]
+    </div>
+}
 <h1>List</h1>
 
 <p>
