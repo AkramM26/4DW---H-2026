@@ -15,7 +15,7 @@ namespace TP1.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction("Index", "Branch");
         }
 
         public IActionResult Privacy()
