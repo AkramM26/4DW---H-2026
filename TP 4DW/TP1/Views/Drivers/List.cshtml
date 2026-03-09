@@ -1,11 +1,24 @@
 ﻿@model IEnumerable<LocationManagerCore.Domains.Driver>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "List";
 }
 
 @{
     var erreur = ViewData["Erreur"] as string;
+}
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Message"]
+    </div>
+}
+
+@if (TempData["Erreur"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Erreur"]
+    </div>
 }
 
 @if (!string.IsNullOrEmpty(erreur))

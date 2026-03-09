@@ -36,7 +36,7 @@ namespace TP1.Models.Drivers
 
         public Guid AddressId { get; set; }
         [ForeignKey("AddressId")]
-        public virtual Address Address { get; set; }
+        public virtual Address? Address { get; set; }
 
         // Propriété de navigation pour les locations
         public virtual ICollection<Location>? Locations { get; set; }
