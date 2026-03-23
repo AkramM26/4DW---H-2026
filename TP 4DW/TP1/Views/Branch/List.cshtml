@@ -24,12 +24,10 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
+            <th>@Html.DisplayNameFor(model => model.Status)</th>
+            <th>@Html.DisplayNameFor(model => model.Name)</th>
+            <th>Véhicules Actifs</th>
+            <th>Désactivés</th>
             <th></th>
         </tr>
     </thead>
@@ -37,16 +35,21 @@
         @foreach (var item in Model)
         {
             <tr>
+                <td>@Html.DisplayFor(modelItem => item.Status)</td>
+                <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                
                 <td>
-                    @Html.DisplayFor(modelItem => item.Status)
+                    <span class="badge bg-success">@item.ActiveCarsCount</span>
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Name)
+                    <span class="badge bg-warning text-dark">@item.DisabledCarsCount</span>
                 </td>
+
                 <td>
                     @Html.ActionLink("Edit", "Edit", new { branchId = item.BranchId }) |
-                    @Html.ActionLink("Liste de voitures", "List", "Car", new { branchId = item.BranchId }) |
+                    @Html.ActionLink("Liste de voitures", "List", "Car", new { branchId = item.BranchId }, new { @class = "fw-bold" }) |
                     @Html.ActionLink("Delete", "Delete", new { branchId = item.BranchId })
+                </td>
             </tr>
         }
     </tbody>

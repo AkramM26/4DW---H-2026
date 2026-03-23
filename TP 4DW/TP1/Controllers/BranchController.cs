@@ -1,11 +1,8 @@
 ﻿using LocationManageCore.Data;
 using LocationManagerCore.Domains;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.Operations;
 using Microsoft.EntityFrameworkCore;
 using TP1.Models.Branches;
-using TP1.Models.Cars;
-
 
 namespace TP1.Controllers;
 
@@ -13,10 +10,29 @@ public class BranchController(ApplicationDbContext context) : Controller
 {
     private readonly ApplicationDbContext Context = context;
 
+
     [HttpGet]
     public IActionResult Index()
     {
         return RedirectToAction(nameof(List));
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> List()
+    {
+        var branches = await Context.Branches
+            .Include(b => b.Cars)
+            .Select(b => new BranchItem
+            {
+                BranchId = b.BranchId,
+                Name = b.Name,
+                Status = b.Status,
+                ActiveCarsCount = b.Cars.Count(c => c.Status == "Actif"),
+                DisabledCarsCount = b.Cars.Count(c => c.Status == "Désactivé")
+            })
+            .ToListAsync();
+
+        return View(branches);
     }
 
     [HttpGet]
@@ -28,124 +44,81 @@ public class BranchController(ApplicationDbContext context) : Controller
     [HttpPost]
     public async Task<IActionResult> Create(BranchCreate model)
     {
-        if (!ModelState.IsValid)
-        {
-            return View(model);
-        }
+        if (!ModelState.IsValid) return View(model);
 
-        var branch = Branch.Create(
-            model.Status,
-            model.Name);
+        var branch = Branch.Create(model.Status, model.Name);
+
         Context.Branches.Add(branch);
         await Context.SaveChangesAsync();
+
         return RedirectToAction(nameof(List));
     }
 
-
     [HttpGet]
-
-    public async Task<IActionResult> List()
+    public async Task<IActionResult> Edit(Guid branchId)
     {
-
-
-        var branch = await Context.Branches
-            .Select(branch => new BranchItem
-            {
-                BranchId = branch.BranchId,
-                Name = branch.Name,
-                Status = branch.Status
-            }).ToListAsync();
-        return View(branch);
-    }
-
-    [HttpGet]
-    public async Task<IActionResult> Details(Guid branchid)
-    {
-        return RedirectToAction("List", "Car", new { branchId = branchid });
-    }
-
-
-    [HttpGet]
-    public async Task<IActionResult> Edit(Guid id)
-    {
-        var branch = await Context.Branches.FindAsync(id);
-
-        if (branch is null)
-        {
-            return NotFound();
-        }
+        var branch = await Context.Branches.FindAsync(branchId);
+        if (branch is null) return NotFound();
 
         var model = new BranchEdit
         {
+            Id = branch.BranchId,
             Status = branch.Status,
             Name = branch.Name
         };
+
         return View(model);
     }
 
     [HttpPost]
     public async Task<IActionResult> Edit(BranchEdit model)
     {
-        try
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
+        if (!ModelState.IsValid) return View(model);
 
-            var branch = await Context.Branches.FindAsync(model.Id);
-            if (branch is null)
-            {
-                return NotFound();
-            }
+        var branch = await Context.Branches.FindAsync(model.Id);
+        if (branch is null) return NotFound();
 
-            branch.Status = model.Status;
-            branch.Name = model.Name;
-            await Context.SaveChangesAsync();
-            string action = model.Status ? "activée" : "désactivée";
-            TempData["Message"] = $"La succursale a été {action} avec succès.";
-            return RedirectToAction(nameof(List));
-        }
-        catch (Exception)
-        {
-            TempData["Erreur"] = "Erreur : Impossible de modifier l'état de la succursale.";
-            return RedirectToAction(nameof(List));
-        }
+        branch.Status = model.Status;
+        branch.Name = model.Name;
+
+        await Context.SaveChangesAsync();
+
+        string action = model.Status ? "activée" : "désactivée";
+        TempData["Message"] = $"La succursale {branch.Name} a été {action} avec succès.";
+
+        return RedirectToAction(nameof(List));
     }
 
     [HttpGet]
-    public async Task<IActionResult> Delete(Guid id)
+    public async Task<IActionResult> Delete(Guid branchId)
     {
-        var branch = await Context.Branches.FindAsync(id);
+        var branch = await Context.Branches.FindAsync(branchId);
+        if (branch is null) return NotFound();
 
-        if (branch is null)
+        if (await Context.Cars.AnyAsync(c => c.BranchId == branchId))
         {
-            return NotFound();
+            TempData["Erreur"] = "Impossible de supprimer une succursale qui contient des véhicules.";
+            return RedirectToAction(nameof(List));
         }
 
         Context.Branches.Remove(branch);
         await Context.SaveChangesAsync();
-        return RedirectToAction(nameof(List));
 
+        TempData["Message"] = "Succursale supprimée avec succès.";
+        return RedirectToAction(nameof(List));
     }
 
     [HttpPost]
-    public IActionResult ToggleStatus(int id)
+    public async Task<IActionResult> ToggleStatus(Guid branchId)
     {
-        var branch = context.Branches.Find(id);
+        var branch = await Context.Branches.FindAsync(branchId);
         if (branch != null)
         {
-            // Logique pour inverser l'état
             branch.Status = !branch.Status;
-            context.SaveChanges();
-
-            TempData["Message"] = "Modification réussie";
-        }
-        else
-        {
-            TempData["Error"] = "Erreur lors de la modification";
+            await Context.SaveChangesAsync();
+            TempData["Message"] = "Statut mis à jour.";
         }
 
-        return RedirectToAction(nameof(Index));
+        return RedirectToAction(nameof(List));
     }
 }
