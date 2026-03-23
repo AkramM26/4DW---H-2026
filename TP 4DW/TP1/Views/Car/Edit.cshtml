@@ -5,96 +5,100 @@
 }
 
 <div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h1>Modifier le véhicule : <span class="text-primary">@Model.Nickname</span></h1>
-        <a asp-action="List" asp-route-branchId="@ViewBag.BranchId" class="btn btn-outline-secondary">
-            <i class="bi bi-arrow-left"></i> Retour à la liste
-        </a>
-    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card shadow border-0">
+                <div class="card-header bg-primary text-white py-3 d-flex justify-content-between align-items-center">
+                    <h3 class="mb-0"><i class="bi bi-pencil-square me-2"></i>Modifier : @Model.Nickname</h3>
+                    <a asp-action="List" asp-route-branchId="@Model.BranchId" class="btn btn-sm btn-light shadow-sm">
+                        <i class="bi bi-arrow-left"></i> Retour
+                    </a>
+                </div>
 
-    <div class="card shadow">
-        <div class="card-body">
-            <form asp-action="Edit">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input type="hidden" asp-for="Id" />
-                <input type="hidden" asp-for="BranchId" />
-
-                <div class="row">
-                    <div class="col-md-6 mb-4">
-                        <h5 class="border-bottom pb-2 mb-3"><i class="bi bi-info-circle"></i> Identification</h5>
-                        <div class="mb-3">
-                            <label asp-for="Nickname" class="form-label">Surnom / Code interne</label>
-                            <input asp-for="Nickname" class="form-control" placeholder="ex: MTL-001" />
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label asp-for="CarBrand" class="form-label">Marque</label>
-                                <input asp-for="CarBrand" class="form-control" />
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label asp-for="CarModel" class="form-label">Modèle</label>
-                                <input asp-for="CarModel" class="form-control" />
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label asp-for="Year" class="form-label">Année</label>
-                                <input asp-for="Year" class="form-control" type="number" />
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label asp-for="Color" class="form-label">Couleur</label>
-                                <input asp-for="Color" class="form-control" />
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6 mb-4">
-                        <h5 class="border-bottom pb-2 mb-3"><i class="bi bi-gear"></i> Statut et État</h5>
+                <div class="card-body p-4">
+                    <form asp-action="Edit">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
                         
-                        <div class="mb-4">
-                            <label asp-for="Status" class="form-label fw-bold text-danger">Statut de gestion</label>
-                            <select asp-for="Status" class="form-select border-danger">
-                                <option value="Actif">Actif (En service)</option>
-                                <option value="Désactivé">Désactivé (Prêt pour archivage)</option>
-                            </select>
-                            <small class="text-muted">Un véhicule doit être "Désactivé" pour être archivé.</small>
-                        </div>
+                        <input type="hidden" asp-for="Id" />
+                        <input type="hidden" asp-for="BranchId" />
 
-                        <div class="form-check form-switch mb-3">
-                            <input asp-for="Availability" class="form-check-input" type="checkbox" role="switch">
-                                <label asp-for="Availability" class="form-check-label">Disponible pour location</label>
-                            </div>
-
-                            <div class="form-check form-switch mb-3">
-                                <input asp-for="State" class="form-check-input" type="checkbox" role="switch">
-                                    <label asp-for="State" class="form-check-label">Bon état mécanique</label>
+                        <div class="row">
+                            <div class="col-md-6 border-end">
+                                <h5 class="text-secondary mb-3 border-bottom pb-2">Identification</h5>
+                                
+                                <div class="mb-3">
+                                    <label asp-for="Nickname" class="form-label fw-bold">Surnom / Code interne</label>
+                                    <input asp-for="Nickname" class="form-control form-control-lg" />
                                 </div>
 
                                 <div class="mb-3">
-                                    <label asp-for="Mileage" class="form-label">Kilométrage (km)</label>
-                                    <input asp-for="Mileage" class="form-control" type="number" />
+                                    <label asp-for="SerialNumber" class="form-label">Numéro de série (NIV)</label>
+                                    <input asp-for="SerialNumber" class="form-control bg-light" readonly />
+                                    <small class="text-muted">Le NIV ne peut pas être modifié une fois créé.</small>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="Registration" class="form-label">Immatriculation</label>
+                                    <input asp-for="Registration" class="form-control" />
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label asp-for="CarBrand" class="form-label">Marque</label>
+                                        <input asp-for="CarBrand" class="form-control" />
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label asp-for="CarModel" class="form-label">Modèle</label>
+                                        <input asp-for="CarModel" class="form-control" />
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="mb-3">
-                            <label asp-for="SerialNumber" class="form-label">Numéro de série (NIV)</label>
-                            <input asp-for="SerialNumber" class="form-control" />
-                            <span asp-validation-for="SerialNumber" class="text-danger small"></span>
-                        </div>
+                            <div class="col-md-6 ps-4">
+                                <h5 class="text-secondary mb-3 border-bottom pb-2">Gestion & État</h5>
 
-                        <div class="mb-3">
-                            <label asp-for="Registration" class="form-label">Immatriculation</label>
-                            <input asp-for="Registration" class="form-control" />
-                            <span asp-validation-for="Registration" class="text-danger small"></span>
-                        </div>
+                                <div class="mb-4">
+                                    <label asp-for="Status" class="form-label fw-bold text-danger">Statut de gestion</label>
+                                    <select asp-for="Status" class="form-select border-danger shadow-sm">
+                                        <option value="Actif">Actif (En service)</option>
+                                        <option value="Désactivé">Désactivé (Prêt pour archivage)</option>
+                                    </select>
+                                    <div class="alert alert-warning py-1 px-2 mt-2 small">
+                                        <i class="bi bi-exclamation-triangle me-1"></i> Le statut doit être <strong>Désactivé</strong> pour archiver.
+                                    </div>
+                                </div>
 
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
-                            <button type="submit" class="btn btn-primary btn-lg px-5">
-                                <i class="bi bi-check-lg"></i> Enregistrer
-                            </button>
+                                <div class="p-3 bg-light rounded border mb-3">
+                                    <div class="form-check form-switch mb-2">
+                                        <input asp-for="Availability" class="form-check-input" type="checkbox" role="switch">
+                                            <label asp-for="Availability" class="form-check-label fw-bold">Disponible pour location</label>
+                                        </div>
+                                        <div class="form-check form-switch">
+                                            <input asp-for="State" class="form-check-input" type="checkbox" role="switch">
+                                                <label asp-for="State" class="form-check-label fw-bold">Bon état mécanique</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label asp-for="Mileage" class="form-label">Kilométrage</label>
+                                            <div class="input-group">
+                                                <input asp-for="Mileage" class="form-control" type="number" />
+                                                <span class="input-group-text">km</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <hr class="my-4" />
+
+                                <div class="d-flex justify-content-end">
+                                    <button type="submit" class="btn btn-success btn-lg px-5 shadow">
+                                        <i class="bi bi-save me-2"></i> Enregistrer les modifications
+                                    </button>
+                                </div>
+                            </form>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>

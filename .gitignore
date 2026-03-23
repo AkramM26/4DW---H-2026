@@ -416,3 +416,6 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+/TP 4DW/TP1/app.db
+/TP 4DW/TP1/app.db-shm
+/TP 4DW/TP1/app.db-wal

@@ -1,38 +1,49 @@
 ﻿@model TP1.Models.Branches.BranchCreate
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Créer une succursale";
 }
 
-<h1>Create</h1>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow border-0">
+                <div class="card-header bg-dark text-white py-3">
+                    <h4 class="mb-0"><i class="bi bi-geo-alt-fill me-2"></i>Nouvelle Succursale</h4>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-action="Create">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-<h4>BranchCreate</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Status" /> @Html.DisplayNameFor(model => model.Status)
-                </label>
+                        <div class="mb-4">
+                            <label asp-for="Name" class="form-label fw-bold">Nom de la succursale</label>
+                            <input asp-for="Name" class="form-control form-control-lg" placeholder="Ex: Succursale de Saint-Hyacinthe" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-4 p-3 bg-light rounded">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" asp-for="Status" id="statusSwitch">
+                                    <label class="form-check-label fw-bold" for="statusSwitch">
+                                        État de la succursale (Active)
+                                    </label>
+                                </div>
+                                <small class="text-muted">Désactivez cette option si la succursale n'est pas encore prête à recevoir des véhicules.</small>
+                            </div>
+
+                            <hr />
+
+                            <div class="d-flex justify-content-between align-items-center mt-4">
+                                <a asp-action="List" class="btn btn-link text-secondary text-decoration-none">
+                                    <i class="bi bi-arrow-left"></i> Retour à la liste
+                                </a>
+                                <button type="submit" class="btn btn-primary px-5 shadow-sm">
+                                    <i class="bi bi-plus-lg me-1"></i> Créer
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

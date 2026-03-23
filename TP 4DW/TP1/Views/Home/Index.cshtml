@@ -1,8 +1,71 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Tableau de Bord";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container mt-5">
+    <div class="text-center mb-5">
+        <h1 class="display-3 fw-bold text-dark">Gestion de Flotte <span class="text-primary">v1.0</span></h1>
+        <p class="lead text-muted">Bienvenue, Gabriel. Voici l'état actuel de vos opérations.</p>
+        <hr class="w-25 mx-auto border-primary border-2">
+    </div>
+
+    <div class="row g-4 mb-5">
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 h-100 bg-primary text-white">
+                <div class="card-body text-center py-4">
+                    <i class="bi bi-buildings fs-1 mb-2"></i>
+                    <h5 class="card-title opacity-75">Succursales</h5>
+                    <h2 class="display-5 fw-bold">Active</h2>
+                    <a asp-controller="Branch" asp-action="List" class="btn btn-light btn-sm mt-2 rounded-pill px-4">Gérer le réseau</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 h-100 bg-dark text-white">
+                <div class="card-body text-center py-4">
+                    <i class="bi bi-car-front fs-1 mb-2"></i>
+                    <h5 class="card-title opacity-75">Véhicules</h5>
+                    <h2 class="display-5 fw-bold">Complet</h2>
+                    <a asp-controller="Car" asp-action="ListAll" class="btn btn-outline-light btn-sm mt-2 rounded-pill px-4">Voir l'inventaire</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 h-100 border-start border-warning border-5">
+                <div class="card-body text-center py-4">
+                    <i class="bi bi-archive text-warning fs-1 mb-2"></i>
+                    <h5 class="card-title text-muted">Zone d'Archive</h5>
+                    <h2 class="display-5 fw-bold text-dark">Sécurisée</h2>
+                    <a asp-controller="Car" asp-action="ArchivedList" class="btn btn-warning btn-sm mt-2 rounded-pill px-4 text-dark fw-bold">Consulter</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card shadow border-0 bg-light">
+                <div class="card-body p-4 text-center">
+                    <h4 class="fw-bold mb-4">Actions de Gestion</h4>
+                    <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
+                        <a asp-controller="Drivers" asp-action="Index" class="btn btn-outline-dark px-4 py-2 shadow-sm">
+                            <i class="bi bi-people-fill me-2"></i>Conducteurs
+                        </a>
+                        <a asp-controller="Branch" asp-action="Create" class="btn btn-outline-primary px-4 py-2 shadow-sm">
+                            <i class="bi bi-plus-circle me-2"></i>Nouvelle Succursale
+                        </a>
+                        <a href="#" class="btn btn-outline-secondary px-4 py-2 shadow-sm disabled">
+                            <i class="bi bi-file-earmark-bar-graph me-2"></i>Rapports (Bientôt)
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<footer class="mt-5 pt-5 text-center text-muted small">
+    <p><i class="bi bi-shield-check text-success me-1"></i> Système connecté à ApplicationDbContext | @DateTime.Now.ToString("f")</p>
+</footer>

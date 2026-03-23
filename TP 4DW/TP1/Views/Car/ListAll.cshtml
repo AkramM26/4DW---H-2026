@@ -4,61 +4,112 @@
     ViewData["Title"] = "Inventaire Global";
 }
 
-<h1>Inventaire complet des véhicules</h1>
+<div class="container-fluid mt-4 px-4">
+    <div class="card shadow-sm border-0 mb-4 bg-dark text-white">
+        <div class="card-body d-flex justify-content-between align-items-center py-3">
+            <div>
+                <h2 class="mb-0 fw-bold"><i class="bi bi-globe2 me-2"></i>Inventaire Global de la Flotte</h2>
+                <p class="text-light opacity-75 mb-0">Vue d'ensemble de tous les véhicules à travers les succursales</p>
+            </div>
+            <div class="text-end">
+                <span class="badge bg-primary px-3 py-2 rounded-pill">Total: @Model.Count() véhicules</span>
+            </div>
+        </div>
+    </div>
 
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>@Html.DisplayNameFor(model => model.Nickname)</th>
-            <th>@Html.DisplayNameFor(model => model.CarBrand)</th>
-            <th>@Html.DisplayNameFor(model => model.CarModel)</th>
-            <th>@Html.DisplayNameFor(model => model.Year)</th>
-            <th>@Html.DisplayNameFor(model => model.Registration)</th>
-            <th>@Html.DisplayNameFor(model => model.Status)</th>
-            <th>@Html.DisplayNameFor(model => model.Availability)</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td><strong>@Html.DisplayFor(modelItem => item.Nickname)</strong></td>
-                <td>@Html.DisplayFor(modelItem => item.CarBrand)</td>
-                <td>@Html.DisplayFor(modelItem => item.CarModel)</td>
-                <td>@Html.DisplayFor(modelItem => item.Year)</td>
-                <td>@Html.DisplayFor(modelItem => item.Registration)</td>
-                <td>
-                    <span class="badge @(item.Status == "Actif" ? "bg-success" : item.Status == "Désactivé" ? "bg-warning" : "bg-secondary")">
-                        @item.Status
-                    </span>
-                </td>
-                <td>
-                    @if (item.Availability)
-                    {
-                        <span class="text-success">Disponible</span>
-                    }
-                    else
-                    {
-
-                        <span class="text-danger">Louée</span>
-                    }
-                </td>
-                <td>
-                    <div class="btn-group">
-                        <a asp-action="Edit" asp-route-id="@item.Id" asp-route-branchId="@item.BranchId" class="btn btn-sm btn-outline-primary">Modifier</a>
-                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info">Détails</a>
-                        
-                        @if (item.Status == "Désactivé")
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light text-secondary border-bottom">
+                        <tr>
+                            <th class="ps-4 py-3">Véhicule (Surnom)</th>
+                            <th>Détails techniques</th>
+                            <th>Immatriculation</th>
+                            <th>Statut</th>
+                            <th>Disponibilité</th>
+                            <th class="text-center px-4">Actions de gestion</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
                         {
-                            <form asp-action="Archive" method="post" onsubmit="return confirm('Confirmer l\'archivage définitif de ce véhicule ?');" style="display:inline;">
-                                <input type="hidden" name="id" value="@item.Id" />
-                                <button type="submit" class="btn btn-sm btn-danger ms-1">Archiver</button>
-                            </form>
+                            <tr>
+                                <td class="ps-4">
+                                    <div class="fw-bold text-primary">@item.Nickname</div>
+                                    <small class="text-muted"><i class="bi bi-geo-alt-fill"></i> ID Succursale: @item.BranchId.ToString().Substring(0, 8)...</small>
+                                </td>
+                                <td>
+                                    <div class="fw-bold">@item.CarBrand @item.CarModel</div>
+                                    <div class="small text-muted">Année : @item.Year</div>
+                                </td>
+                                <td>
+                                    <span class="badge bg-light text-dark border font-monospace">@item.Registration</span>
+                                </td>
+                                <td>
+                                    @if (item.Status == "Actif")
+                                    {
+                                        <span class="badge rounded-pill bg-success px-3">
+                                            <i class="bi bi-check-circle me-1"></i> Actif
+                                        </span>
+                                    }
+                                    else if (item.Status == "Désactivé")
+                                    {
+                                        <span class="badge rounded-pill bg-warning text-dark px-3">
+                                            <i class="bi bi-pause-circle me-1"></i> Désactivé
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge rounded-pill bg-secondary px-3">@item.Status</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (item.Availability)
+                                    {
+                                        <span class="text-success small fw-bold"><i class="bi bi-circle-fill me-1 small"></i> En stock</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-danger small fw-bold"><i class="bi bi-circle-fill me-1 small"></i> En location</span>
+                                    }
+                                </td>
+
+                                <td class="text-center px-4">
+                                    <div class="d-flex justify-content-center gap-2">
+                                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info text-white shadow-sm d-flex align-items-center justify-content-center" style="min-width: 75px;">
+                                            <i class="bi bi-search me-1"></i> Voir
+                                        </a>
+                                        <a asp-action="Edit" asp-route-id="@item.Id" asp-route-branchId="@item.BranchId" class="btn btn-sm btn-primary shadow-sm d-flex align-items-center justify-content-center" style="min-width: 75px;">
+                                            <i class="bi bi-pencil-fill me-1"></i> Éditer
+                                        </a>
+
+                                        @if (item.Status == "Désactivé")
+                                        {
+                                            <form asp-action="Archive" method="post" onsubmit="return confirm('Confirmer l\'archivage définitif ?');" style="display:inline;">
+                                                <input type="hidden" name="id" value="@item.Id" />
+                                                <button type="submit" class="btn btn-sm btn-danger shadow-sm d-flex align-items-center justify-content-center" style="min-width: 90px;">
+                                                    <i class="bi bi-archive-fill me-1"></i> Archiver
+                                                </button>
+                                            </form>
+                                        }
+                                        else
+                                        {
+                                            <div style="min-width: 90px;"></div>
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
                         }
-                    </div>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4 mb-5">
+        <a asp-controller="Branch" asp-action="List" class="btn btn-outline-dark shadow-sm">
+            <i class="bi bi-house-door-fill me-1"></i> Accueil Succursales
+        </a>
+    </div>
+</div>

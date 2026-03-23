@@ -1,80 +1,126 @@
 ﻿@using LocationManagerCore.Domains
 @model IEnumerable<Location>
 @{
-    ViewData["Title"] = "Liste des Locations";
+    ViewData["Title"] = "Centre de Location";
     var erreur = ViewData["Erreur"] as string;
 }
 
-<h1 class="mb-4">Gestion des Locations</h1>
+<div class="container mt-4 mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold text-dark mb-0"><i class="bi bi-key-fill me-2 text-primary"></i>Centre de Location</h2>
+            <p class="text-muted mb-0">Suivi des contrats actifs et historique des dossiers</p>
+        </div>
+        <div class="text-end">
+            <span class="badge bg-primary-subtle text-primary border border-primary px-3 py-2 rounded-pill">
+                <i class="bi bi-info-circle me-1"></i> @(((List<Location>)ViewBag.Courantes).Count) Dossiers Actifs
+            </span>
+        </div>
+    </div>
 
-@if (!string.IsNullOrEmpty(erreur))
-{
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        @erreur
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-}
+    @if (!string.IsNullOrEmpty(erreur))
+    {
+        <div class="alert alert-danger alert-dismissible fade show shadow-sm border-0 mb-4" role="alert">
+            <i class="bi bi-exclamation-octagon-fill me-2"></i> @erreur
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
 
-@* Les locations courantes *@
-<div class="card border-primary mb-4">
-    <div class="card-header bg-primary text-white">
-        <h3 class="card-title mb-0">Locations Courantes</h3>
+    <div class="card shadow-sm border-0 mb-5">
+        <div class="card-header bg-primary text-white py-3">
+            <h4 class="card-title mb-0"><i class="bi bi-play-circle-fill me-2"></i>Locations Courantes</h4>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light text-secondary small text-uppercase">
+                        <tr>
+                            <th class="ps-4">Conducteur</th>
+                            <th>Véhicule</th>
+                            <th>Période</th>
+                            <th>Durée Actuelle</th>
+                            <th class="text-end pe-4">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var loc in (List<Location>)ViewBag.Courantes)
+                        {
+                            <tr>
+                                <td class="ps-4">
+                                    <div class="fw-bold text-dark">@loc.Driver.FirstName @loc.Driver.LastName</div>
+                                    <small class="text-muted">Permis: @loc.Driver.DriverLicenceNumber</small>
+                                </td>
+                                <td>
+                                    <span class="badge bg-light text-dark border">
+                                        <i class="bi bi-car-front-fill me-1"></i> @loc.Car.Nickname
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="small">Du : <strong>@loc.Opening.ToShortDateString()</strong></div>
+                                    <div class="small text-primary">Au : <strong>@loc.PlanedClosing.ToShortDateString()</strong></div>
+                                </td>
+                                <td>
+                                    @{
+                                        var jours = (DateTime.Now - loc.Opening).Days;
+                                        var alerte = jours > 30 ? "text-danger fw-bold" : "text-success";
+                                    }
+                                    <span class="@alerte"><i class="bi bi-clock-history me-1"></i> @jours jour(s)</span>
+                                </td>
+                                <td class="text-end pe-4">
+                                    <a asp-action="Details" asp-route-id="@loc.Id" class="btn btn-sm btn-primary px-3 shadow-sm">
+                                        <i class="bi bi-search me-1"></i> Consulter
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-    <div class="table-responsive">
-        <table class="table table-hover mb-0">
-            <thead>
-                <tr>
-                    <th>Conducteur</th>
-                    <th>Voiture</th>
-                    <th>Début</th>
-                    <th>Fin Prévue</th>
-                    <th>Durée</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var loc in (List<Location>)ViewBag.Courantes)
-                {
-                    <tr>
-                        <td>@loc.Driver.FirstName @loc.Driver.LastName</td>
-                        <td>@loc.Car.Nickname</td>
-                        <td>@loc.Opening.ToShortDateString()</td>
-                        <td>@loc.PlanedClosing.ToShortDateString()</td>
-                        <td>@((DateTime.Now - loc.Opening).Days) jour(s)</td>
-                        <td><a asp-action="Details" asp-route-id="@loc.Id" class="btn btn-sm btn-info">Consulter</a></td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-</div>
 
-@* Locations passées *@
-<div class="card border-secondary">
-    <div class="card-header bg-secondary text-white">
-        <h3 class="card-title mb-0">Historique (Passées)</h3>
+    <div class="card shadow-sm border-0 bg-light">
+        <div class="card-header bg-dark text-white py-3">
+            <h4 class="card-title mb-0"><i class="bi bi-clock-fill me-2"></i>Historique des Dossiers</h4>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-secondary small text-uppercase">
+                        <tr>
+                            <th class="ps-4">Conducteur</th>
+                            <th>Véhicule</th>
+                            <th>Début</th>
+                            <th>Fin Réelle</th>
+                            <th class="text-end pe-4">Détails</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var loc in (List<Location>)ViewBag.Passees)
+                        {
+                            <tr class="text-muted">
+                                <td class="ps-4 fw-bold">@loc.Driver.FirstName @loc.Driver.LastName</td>
+                                <td>@loc.Car.Nickname</td>
+                                <td>@loc.Opening.ToShortDateString()</td>
+                                <td>
+                                    <span class="text-success"><i class="bi bi-check2-circle me-1"></i> @loc.OfficialClosing?.ToShortDateString()</span>
+                                </td>
+                                <td class="text-end pe-4">
+                                    <a asp-action="Details" asp-route-id="@loc.Id" class="btn btn-sm btn-outline-secondary">
+                                        <i class="bi bi-file-earmark-text"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-    <table class="table table-hover mb-0">
-        <thead>
-            <tr>
-                <th>Conducteur</th>
-                <th>Voiture</th>
-                <th>Début</th>
-                <th>Fin Réelle</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var loc in (List<Location>)ViewBag.Passees)
-            {
-                <tr>
-                    <td>@loc.Driver.FirstName @loc.Driver.LastName</td>
-                    <td>@loc.Car.Nickname</td>
-                    <td>@loc.Opening.ToShortDateString()</td>
-                    <td>@loc.OfficialClosing?.ToShortDateString()</td>
-                    <td><a asp-action="Details" asp-route-id="@loc.Id" class="btn btn-sm btn-outline-secondary">Détails</a></td>
-                </tr>
-            }
-        </tbody>
-    </table>
+
+    <div class="mt-4">
+        <a asp-controller="Home" asp-action="Index" class="btn btn-link text-secondary text-decoration-none">
+            <i class="bi bi-house-door"></i> Retour au tableau de bord
+        </a>
+    </div>
 </div>

@@ -77,18 +77,28 @@
                                 <tbody>
                                     @foreach (var loc in Model.Locations.OrderByDescending(l => l.Opening))
                                     {
+                                        var duree = loc.OfficialClosing.HasValue
+                                            ? (loc.OfficialClosing.Value - loc.Opening).Days
+                                            : (DateTime.Now - loc.Opening).Days;
+
                                         <tr>
                                             <td>@loc.Opening.ToShortDateString()</td>
                                             <td>@(loc.Driver != null ? $"{loc.Driver.FirstName} {loc.Driver.LastName}" : "N/A")</td>
                                             <td>
                                                 @if (loc.OfficialClosing == null)
                                                 {
-                                                    <span class="badge bg-info text-dark">En cours</span>
+                                                    <span class="badge bg-info text-dark">En cours (@duree jours)</span>
                                                 }
                                                 else
                                                 {
-                                                    <span class="text-muted">Terminée (@loc.OfficialClosing?.ToShortDateString())</span>
+                                                    <span class="text-muted">Terminée (@duree jours)</span>
                                                 }
+                                            </td>
+
+                                            <td>
+                                                <a asp-controller="Locations" asp-action="Details" asp-route-id="@loc.Id" class="btn btn-sm btn-outline-primary">
+                                                    <i class="bi bi-eye"></i>
+                                                </a>
                                             </td>
                                         </tr>
                                     }

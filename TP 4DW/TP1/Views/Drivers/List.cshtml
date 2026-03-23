@@ -1,67 +1,96 @@
 ﻿@model IEnumerable<LocationManagerCore.Domains.Driver>
 
 @{
-    ViewData["Title"] = "List";
-}
-
-@{
+    ViewData["Title"] = "Gestion des Conducteurs";
     var erreur = ViewData["Erreur"] as string;
 }
-@if (TempData["Message"] != null)
-{
-    <div class="alert alert-success">
-        @TempData["Message"]
+
+<div class="container mt-4">
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i>@TempData["Message"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["Erreur"] != null || !string.IsNullOrEmpty(erreur))
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>@(TempData["Erreur"] ?? erreur)
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center py-3">
+            <h3 class="mb-0"><i class="bi bi-people-fill me-2"></i>Conducteurs</h3>
+            <a asp-action="Create" class="btn btn-primary shadow-sm">
+                <i class="bi bi-person-plus-fill me-1"></i> Nouveau
+            </a>
+        </div>
+        
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light text-secondary">
+                        <tr>
+                            <th class="ps-4">Prénom</th>
+                            <th>Nom</th>
+                            <th>Date de location</th>
+                            <th>Voiture louée</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            var loc = item.Locations?.OrderByDescending(l => l.Opening).FirstOrDefault();
+
+                            <tr>
+                                <td class="ps-4 fw-bold text-primary">@item.FirstName</td>
+                                <td class="fw-bold">@item.LastName</td>
+                                <td>
+                                    @if (loc != null)
+                                    {
+                                        <span><i class="bi bi-calendar3 me-1 text-muted"></i> @loc.Opening.ToShortDateString()</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted small italic">Aucune location</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (loc?.Car != null)
+                                    {
+                                        <span class="badge bg-light text-dark border">
+                                            <i class="bi bi-car-front-fill me-1"></i> @loc.Car.Nickname
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">---</span>
+                                    }
+                                </td>
+                                <td class="text-center">
+                                    <div class="btn-group">
+                                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary" title="Modifier">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info" title="Détails">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger" title="Supprimer"
+                                               onclick="return confirm('Supprimer ce conducteur ?');">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-}
-
-@if (TempData["Erreur"] != null)
-{
-    <div class="alert alert-danger">
-        @TempData["Erreur"]
-    </div>
-}
-
-@if (!string.IsNullOrEmpty(erreur))
-{
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        @erreur
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-}
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>Prénom</th>
-            <th>Nom</th>
-            <th>Date de location</th>
-            <th>Voiture louée</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-
-    <tbody>
-        @foreach (var item in Model)
-        {
-            var loc = item.Locations?.FirstOrDefault();
-
-            <tr>
-                <td>@item.FirstName</td>
-                <td>@item.LastName</td>
-                <td>@loc?.Opening.ToShortDateString()</td>
-                <td>@loc?.Car?.Nickname</td>
-
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+</div>
