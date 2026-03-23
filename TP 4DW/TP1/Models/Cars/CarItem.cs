@@ -16,7 +16,7 @@ namespace TP1.Models.Cars
         public required decimal? EstimatedValue { get; set; }
 
 
-        public required bool Status { get; set; }
+        public required string Status { get; set; }
 
         public required bool Availability { get; set; }
 

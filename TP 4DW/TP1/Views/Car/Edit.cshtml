@@ -1,93 +1,106 @@
 ﻿@model TP1.Models.Cars.CarEdit
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Modifier le véhicule";
 }
 
-<h1>Edit</h1>
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1>Modifier le véhicule : <span class="text-primary">@Model.Nickname</span></h1>
+        <a asp-action="List" asp-route-branchId="@ViewBag.BranchId" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Retour à la liste
+        </a>
+    </div>
 
-<h4>CarEdit</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-            <div class="form-group">
-                <label asp-for="Nickname" class="control-label"></label>
-                <input asp-for="Nickname" class="form-control" />
-                <span asp-validation-for="Nickname" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Status" /> @Html.DisplayNameFor(model => model.Status)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Availability" /> @Html.DisplayNameFor(model => model.Availability)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="State" /> @Html.DisplayNameFor(model => model.State)
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="SerialNumber" class="control-label"></label>
-                <input asp-for="SerialNumber" class="form-control" />
-                <span asp-validation-for="SerialNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Registration" class="control-label"></label>
-                <input asp-for="Registration" class="form-control" />
-                <span asp-validation-for="Registration" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CarBrand" class="control-label"></label>
-                <input asp-for="CarBrand" class="form-control" />
-                <span asp-validation-for="CarBrand" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CarModel" class="control-label"></label>
-                <input asp-for="CarModel" class="form-control" />
-                <span asp-validation-for="CarModel" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Year" class="control-label"></label>
-                <input asp-for="Year" class="form-control" />
-                <span asp-validation-for="Year" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Color" class="control-label"></label>
-                <input asp-for="Color" class="form-control" />
-                <span asp-validation-for="Color" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Mileage" class="control-label"></label>
-                <input asp-for="Mileage" class="form-control" />
-                <span asp-validation-for="Mileage" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EstimatedValue" class="control-label"></label>
-                <input asp-for="EstimatedValue" class="form-control" />
-                <span asp-validation-for="EstimatedValue" class="text-danger"></span>
-            </div>
-            <form asp-action="Edit" method="post">
+    <div class="card shadow">
+        <div class="card-body">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="Id" />
                 <input type="hidden" asp-for="BranchId" />
-                <div class="form-group mt-3">
-                    <input type="submit" value="Save" class="btn btn-primary" />
+
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <h5 class="border-bottom pb-2 mb-3"><i class="bi bi-info-circle"></i> Identification</h5>
+                        <div class="mb-3">
+                            <label asp-for="Nickname" class="form-label">Surnom / Code interne</label>
+                            <input asp-for="Nickname" class="form-control" placeholder="ex: MTL-001" />
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="CarBrand" class="form-label">Marque</label>
+                                <input asp-for="CarBrand" class="form-control" />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="CarModel" class="form-label">Modèle</label>
+                                <input asp-for="CarModel" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Year" class="form-label">Année</label>
+                                <input asp-for="Year" class="form-control" type="number" />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Color" class="form-label">Couleur</label>
+                                <input asp-for="Color" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 mb-4">
+                        <h5 class="border-bottom pb-2 mb-3"><i class="bi bi-gear"></i> Statut et État</h5>
+                        
+                        <div class="mb-4">
+                            <label asp-for="Status" class="form-label fw-bold text-danger">Statut de gestion</label>
+                            <select asp-for="Status" class="form-select border-danger">
+                                <option value="Actif">Actif (En service)</option>
+                                <option value="Désactivé">Désactivé (Prêt pour archivage)</option>
+                            </select>
+                            <small class="text-muted">Un véhicule doit être "Désactivé" pour être archivé.</small>
+                        </div>
+
+                        <div class="form-check form-switch mb-3">
+                            <input asp-for="Availability" class="form-check-input" type="checkbox" role="switch">
+                                <label asp-for="Availability" class="form-check-label">Disponible pour location</label>
+                            </div>
+
+                            <div class="form-check form-switch mb-3">
+                                <input asp-for="State" class="form-check-input" type="checkbox" role="switch">
+                                    <label asp-for="State" class="form-check-label">Bon état mécanique</label>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="Mileage" class="form-label">Kilométrage (km)</label>
+                                    <input asp-for="Mileage" class="form-control" type="number" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="SerialNumber" class="form-label">Numéro de série (NIV)</label>
+                            <input asp-for="SerialNumber" class="form-control" />
+                            <span asp-validation-for="SerialNumber" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Registration" class="form-label">Immatriculation</label>
+                            <input asp-for="Registration" class="form-control" />
+                            <span asp-validation-for="Registration" class="text-danger small"></span>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg px-5">
+                                <i class="bi bi-check-lg"></i> Enregistrer
+                            </button>
+                        </div>
+                    </form>
                 </div>
-            </form>
-        </form>
-    </div>
-</div>
+            </div>
+        </div>
 
-<div>
-    <a asp-action="List" asp-route-branchId="@ViewBag.BranchId">Back to List</a>
-</div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+        @section Scripts {
+            @{
+                await Html.RenderPartialAsync("_ValidationScriptsPartial");
+            }
+        }

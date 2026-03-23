@@ -1,106 +1,62 @@
 ﻿@model IEnumerable<TP1.Models.Cars.CarItem>
 
 @{
-    ViewData["Title"] = "ListAll";
+    ViewData["Title"] = "Inventaire Global";
 }
 
-<h1>List of All cars</h1>
+<h1>Inventaire complet des véhicules</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+<table class="table table-striped">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CarBrand)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CarModel)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Year)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Nickname)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SerialNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Mileage)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Color)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Registration)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EstimatedValue)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Availability)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.State)
-            </th>
-            <th></th>
+            <th>@Html.DisplayNameFor(model => model.Nickname)</th>
+            <th>@Html.DisplayNameFor(model => model.CarBrand)</th>
+            <th>@Html.DisplayNameFor(model => model.CarModel)</th>
+            <th>@Html.DisplayNameFor(model => model.Year)</th>
+            <th>@Html.DisplayNameFor(model => model.Registration)</th>
+            <th>@Html.DisplayNameFor(model => model.Status)</th>
+            <th>@Html.DisplayNameFor(model => model.Availability)</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
             <tr>
+                <td><strong>@Html.DisplayFor(modelItem => item.Nickname)</strong></td>
+                <td>@Html.DisplayFor(modelItem => item.CarBrand)</td>
+                <td>@Html.DisplayFor(modelItem => item.CarModel)</td>
+                <td>@Html.DisplayFor(modelItem => item.Year)</td>
+                <td>@Html.DisplayFor(modelItem => item.Registration)</td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Id)
+                    <span class="badge @(item.Status == "Actif" ? "bg-success" : item.Status == "Désactivé" ? "bg-warning" : "bg-secondary")">
+                        @item.Status
+                    </span>
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.CarBrand)
+                    @if (item.Availability)
+                    {
+                        <span class="text-success">Disponible</span>
+                    }
+                    else
+                    {
+
+                        <span class="text-danger">Louée</span>
+                    }
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.CarModel)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Year)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Nickname)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.SerialNumber)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Mileage)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Color)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Registration)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EstimatedValue)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Status)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Availability)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.State)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Id, item.BranchId }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.Id, item.BranchId }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.Id, item.BranchId })
+                    <div class="btn-group">
+                        <a asp-action="Edit" asp-route-id="@item.Id" asp-route-branchId="@item.BranchId" class="btn btn-sm btn-outline-primary">Modifier</a>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info">Détails</a>
+                        
+                        @if (item.Status == "Désactivé")
+                        {
+                            <form asp-action="Archive" method="post" onsubmit="return confirm('Confirmer l\'archivage définitif de ce véhicule ?');" style="display:inline;">
+                                <input type="hidden" name="id" value="@item.Id" />
+                                <button type="submit" class="btn btn-sm btn-danger ms-1">Archiver</button>
+                            </form>
+                        }
+                    </div>
                 </td>
             </tr>
         }

@@ -5,8 +5,6 @@ namespace TP1.Models.Cars
 {
     public class CarEdit
     {
-
-        [HiddenInput]
         public  Guid Id { get; set; }
 
         [Required(ErrorMessage = "Le surnom est obligatoire.")]
@@ -14,7 +12,7 @@ namespace TP1.Models.Cars
         public required string Nickname { get; set; }
 
         [Required]
-        public required bool Status { get; set; }
+        public required string Status { get; set; }
 
         [Required]
         public required bool Availability { get; set; }

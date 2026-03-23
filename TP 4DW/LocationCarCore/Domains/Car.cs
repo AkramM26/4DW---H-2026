@@ -29,16 +29,16 @@ namespace LocationManageCore.Domains
 
 
         //Not required elements
-        
-        public  bool Status { get; set; }        
-        public  bool Availability { get; set; }
-        public  bool State { get; set; }
+
+        public string Status { get; set; } = "Actif";
+        public bool Availability { get; set; }
+        public bool State { get; set; }
 
 
         //Propriétés de navigation 
 
-        public  Guid BranchId { get; set; }
-        public  virtual Branch Branch { get; set; }
+        public Guid BranchId { get; set; }
+        public virtual Branch Branch { get; set; }
 
 
 

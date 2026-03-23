@@ -14,7 +14,7 @@ namespace TP1.Models.Cars
         public required string Nickname { get; set; }
 
         [Required]
-        public required bool Status { get; set; }
+        public required string Status { get; set; }
 
         [Required]
         public required bool Availability { get; set; }

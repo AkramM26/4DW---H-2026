@@ -2,7 +2,6 @@
 using LocationManageCore.Domains;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Drawing;
 using TP1.Models.Cars;
 
 namespace TP1.Controllers
@@ -55,9 +54,11 @@ namespace TP1.Controllers
         public async Task<IActionResult> ListAll()
         {
             var cars = await Context.Cars
+                .Where(car => car.Status != "Archivé")
                 .Select(car => new CarItem
                 {
                     Id = car.Id,
+                    BranchId = car.BranchId,
                     Nickname = car.Nickname,
                     Status = car.Status,
                     Availability = car.Availability,
@@ -78,7 +79,7 @@ namespace TP1.Controllers
         public async Task<IActionResult> List(Guid branchId)
         {
             var branch = await Context.Branches
-                .Include(b => b.Cars)
+                .Include(b => b.Cars.Where(c => c.Status != "Archivé"))
                 .FirstOrDefaultAsync(b => b.BranchId == branchId);
 
             if (branch == null)
@@ -87,21 +88,21 @@ namespace TP1.Controllers
             }
             ViewBag.BranchId = branchId;
 
-            return View(branch.Cars.ToList()); 
+            return View(branch.Cars.ToList());
         }
 
         [HttpGet]
         public async Task<IActionResult> Edit(Guid id, Guid branchId)
         {
             var car = await Context.Cars.FindAsync(id);
+            if (car is null) return NotFound();
 
-            if (car is null)
-            {
-                return NotFound();
-            }
+            ViewBag.BranchId = branchId;
 
             var model = new CarEdit
             {
+                Id = car.Id,
+                BranchId = branchId,
                 Nickname = car.Nickname,
                 Status = car.Status,
                 Availability = car.Availability,
@@ -114,9 +115,6 @@ namespace TP1.Controllers
                 EstimatedValue = car.EstimatedValue,
                 Year = car.Year,
                 Mileage = car.Mileage
-
-
-
             };
             return View(model);
         }
@@ -167,6 +165,7 @@ namespace TP1.Controllers
 
             var model = new CarDetails
             {
+                Id = car.Id,
                 Nickname = car.Nickname,
                 Status = car.Status,
                 Availability = car.Availability,
@@ -185,23 +184,28 @@ namespace TP1.Controllers
             return View(model);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Delete(Guid id, Guid branchId)
+        [HttpPost]
+        public async Task<IActionResult> Archive(Guid id, Guid? branchId)
         {
-            var contact = await Context.Cars.FindAsync(id);
+            var car = await Context.Cars.FindAsync(id);
+            if (car is null) return NotFound();
 
-            if (contact is null)
+            if (car.Status == "Actif")
             {
-                return NotFound();
+                TempData["Error"] = "Le véhicule doit être désactivé avant de pouvoir être archivé.";
+            }
+            else
+            {
+                car.Status = "Archivé";
+                await Context.SaveChangesAsync();
             }
 
-            Context.Cars.Remove(contact);
-            await Context.SaveChangesAsync();
+            if (branchId.HasValue && branchId != Guid.Empty)
+            {
+                return RedirectToAction(nameof(List), new { branchId = branchId });
+            }
 
-            return RedirectToAction(nameof(List), new { branchId = branchId });
-
+            return RedirectToAction(nameof(ListAll));
         }
-
-
     }
 }
