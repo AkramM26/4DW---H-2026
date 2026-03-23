@@ -1,90 +1,107 @@
-﻿@model TP1.Models.Cars.CarDetails
+﻿@model LocationManageCore.Domains.Car
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Détails du véhicule";
 }
 
-<h1>Details</h1>
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1>Fiche du véhicule : <span class="text-primary">@Model.Nickname</span></h1>
+        <div>
+            @* <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Modifier</a> *@
+            <a asp-action="List" asp-route-branchId="@Model.BranchId" class="btn btn-outline-secondary">Retour à la liste</a>
+        </div>
+    </div>
 
-<div>
-    <h4>CarDetails</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Nickname)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Nickname)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Availability)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Availability)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.State)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.State)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.SerialNumber)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.SerialNumber)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Registration)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Registration)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CarBrand)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CarBrand)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CarModel)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CarModel)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Year)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Year)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Color)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Color)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Mileage)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Mileage)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.EstimatedValue)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.EstimatedValue)
-        </dd>
-    </dl>
-</div>
-<div>
-    @Html.ActionLink("Edit", "Edit", new {}) |
-    <a asp-action="List" asp-route-branchId="@ViewBag.BranchId">Back to List</a>
+    <div class="row">
+        <div class="col-md-5">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">Spécifications techniques</h5>
+                </div>
+                <div class="card-body">
+                    <dl class="row mb-0">
+                        <dt class="col-sm-5">Marque/Modèle</dt>
+                        <dd class="col-sm-7">@Model.CarBrand @Model.CarModel (@Model.Year)</dd>
+
+                        <dt class="col-sm-5">NIV</dt>
+                        <dd class="col-sm-7 text-monospace">@Model.SerialNumber</dd>
+
+                        <dt class="col-sm-5">Plaque</dt>
+                        <dd class="col-sm-7">@Model.Registration</dd>
+
+                        <dt class="col-sm-5">Kilométrage</dt>
+                        <dd class="col-sm-7">@Model.Mileage km</dd>
+
+                        <dt class="col-sm-5">Valeur estimée</dt>
+                        <dd class="col-sm-7">@Model.EstimatedValue?.ToString("C")</dd>
+
+                        <dt class="col-sm-5">État mécanique</dt>
+                        <dd class="col-sm-7">
+                            @if (Model.State)
+                            {
+                                <span class="text-success"><i class="bi bi-check-circle"></i> Bon</span>
+                            }
+                            else
+                            {
+                                <span class="text-danger"><i class="bi bi-exclamation-triangle"></i> Nécessite entretien</span>
+                            }
+                        </dd>
+
+                        <dt class="col-sm-5">Statut</dt>
+                        <dd class="col-sm-7">
+                            <span class="badge @(Model.Status == "Actif" ? "bg-success" : "bg-warning")">@Model.Status</span>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-7">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Historique des locataires & Notes</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.Locations != null && Model.Locations.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Date début</th>
+                                        <th>Conducteur</th>
+                                        <th>Statut</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var loc in Model.Locations.OrderByDescending(l => l.Opening))
+                                    {
+                                        <tr>
+                                            <td>@loc.Opening.ToShortDateString()</td>
+                                            <td>@(loc.Driver != null ? $"{loc.Driver.FirstName} {loc.Driver.LastName}" : "N/A")</td>
+                                            <td>
+                                                @if (loc.OfficialClosing == null)
+                                                {
+                                                    <span class="badge bg-info text-dark">En cours</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-muted">Terminée (@loc.OfficialClosing?.ToShortDateString())</span>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info">Aucun historique de location pour ce véhicule.</div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

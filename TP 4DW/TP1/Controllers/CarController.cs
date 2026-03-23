@@ -102,7 +102,7 @@ namespace TP1.Controllers
             var model = new CarEdit
             {
                 Id = car.Id,
-                BranchId = branchId,
+                BranchId = car.BranchId,
                 Nickname = car.Nickname,
                 Status = car.Status,
                 Availability = car.Availability,
@@ -156,32 +156,16 @@ namespace TP1.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(Guid id)
         {
-            var car = await Context.Cars.FindAsync(id);
+            var car = await Context.Cars
+                .Include(c => c.Locations)
+                    .ThenInclude(l => l.Driver)
+                .FirstOrDefaultAsync(m => m.Id == id);
 
             if (car is null)
             {
                 return NotFound();
             }
-
-            var model = new CarDetails
-            {
-                Id = car.Id,
-                Nickname = car.Nickname,
-                Status = car.Status,
-                Availability = car.Availability,
-                State = car.State,
-                SerialNumber = car.SerialNumber,
-                CarBrand = car.CarBrand,
-                Color = car.Color,
-                CarModel = car.CarModel,
-                Registration = car.Registration,
-                EstimatedValue = car.EstimatedValue,
-                Year = car.Year,
-                Mileage = car.Mileage,
-
-
-            };
-            return View(model);
+            return View(car);
         }
 
         [HttpPost]
@@ -206,6 +190,44 @@ namespace TP1.Controllers
             }
 
             return RedirectToAction(nameof(ListAll));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ArchivedList()
+        {
+            var archivedCars = await Context.Cars
+                .Where(c => c.Status == "Archivé")
+                .Select(c => new CarItem
+                {
+                    Id = c.Id,
+                    Nickname = c.Nickname,
+                    CarBrand = c.CarBrand,
+                    CarModel = c.CarModel,
+                    Registration = c.Registration,
+                    Status = c.Status,
+                    Year = c.Year,
+                    State = c.State,
+                    Availability = c.Availability,
+                    Color = c.Color,
+                    Mileage = c.Mileage,
+                    EstimatedValue = c.EstimatedValue,
+                    SerialNumber = c.SerialNumber
+                }).ToListAsync();
+
+            return View(archivedCars);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Restore(Guid id)
+        {
+            var car = await Context.Cars.FindAsync(id);
+            if (car == null) return NotFound();
+
+            car.Status = "Désactivé";
+            await Context.SaveChangesAsync();
+
+            TempData["Success"] = $"Le véhicule {car.Nickname} a été restauré avec succès.";
+            return RedirectToAction(nameof(ArchivedList));
         }
     }
 }
