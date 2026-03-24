@@ -7,10 +7,23 @@ public static class SeedData
 {
     public static async Task InitializeAsync(ApplicationDbContext context)
     {
+        await context.Database.EnsureCreatedAsync();
+
         if (await context.Branches.AnyAsync())
         {
             return;
         }
+
+        // Adresses
+        var addresses = new List<Address>
+        {
+            new Address { Id = Guid.NewGuid(), StreetNumber = "123", StreetName = "Principale", CityName = "MTL", Province = "QC", Country = "Canada", PostalCode = "H1H 1H1" },
+            new Address { Id = Guid.NewGuid(), StreetNumber = "456", StreetName = "Royale", CityName = "TOR", Province = "ON", Country = "Canada", PostalCode = "M5V 2L1" },
+            new Address { Id = Guid.NewGuid(), StreetNumber = "789", StreetName = "Laurier", CityName = "STH", Province = "QC", Country = "Canada", PostalCode = "J2S 1A1" },
+            new Address { Id = Guid.NewGuid(), StreetNumber = "101", StreetName = "Gare", CityName = "GAT", Province = "QC", Country = "Canada", PostalCode = "J8X 2B3" },
+            new Address { Id = Guid.NewGuid(), StreetNumber = "202", StreetName = "Lac", CityName = "SHE", Province = "QC", Country = "Canada", PostalCode = "J1K 3M4" }
+        };
+        context.AddRange(addresses);
 
         // Succursales
         var branch1 = Branch.Create(true, "Montréal");
@@ -41,14 +54,15 @@ public static class SeedData
         // Conducteurs
         var drivers = new List<Driver>
         {
-            new Driver { Id = Guid.NewGuid(), LastName = "Tremblay", FirstName = "Jean-Marc", EmailAdress = "jeanmarc.tremblay@email.com", PhoneNumber = "(450) 555-1234", DriverLicenceNumber = "A1234-121299-12", AddressId = Guid.NewGuid() },
-            new Driver { Id = Guid.NewGuid(), LastName = "Gagnon", FirstName = "Sophie", EmailAdress = "sophie.gagnon@outlook.com", PhoneNumber = "514-777-8888", DriverLicenceNumber = "B5678-150589-08", AddressId = Guid.NewGuid() },
-            new Driver { Id = Guid.NewGuid(), LastName = "Beaulieu", FirstName = "Mathieu", EmailAdress = "mathieu.beaulieu@gmail.com", PhoneNumber = "(819) 333-9999", DriverLicenceNumber = "C9012-030401-15", AddressId = Guid.NewGuid() },
-            new Driver { Id = Guid.NewGuid(), LastName = "Lavoie", FirstName = "Émilie", EmailAdress = "emilie.lavoie@protonmail.com", PhoneNumber = "438-222-3344", DriverLicenceNumber = "D3456-220795-19", AddressId = Guid.NewGuid() },
-            new Driver { Id = Guid.NewGuid(), LastName = "Roy", FirstName = "Alexandre", EmailAdress = "alex.roy@live.ca", PhoneNumber = "(450) 666-7777", DriverLicenceNumber = "E7890-010203-22", AddressId = Guid.NewGuid() }
+            new Driver { Id = Guid.NewGuid(), LastName = "Tremblay", FirstName = "Jean-Marc", EmailAdress = "jeanmarc.tremblay@email.com", PhoneNumber = "(450) 555-1234", DriverLicenceNumber = "A1234-121299-12", AddressId = addresses[0].Id },
+            new Driver { Id = Guid.NewGuid(), LastName = "Gagnon", FirstName = "Sophie", EmailAdress = "sophie.gagnon@outlook.com", PhoneNumber = "514-777-8888", DriverLicenceNumber = "B5678-150589-08", AddressId = addresses[1].Id },
+            new Driver { Id = Guid.NewGuid(), LastName = "Beaulieu", FirstName = "Mathieu", EmailAdress = "mathieu.beaulieu@gmail.com", PhoneNumber = "(819) 333-9999", DriverLicenceNumber = "C9012-030401-15", AddressId = addresses[2].Id },
+            new Driver { Id = Guid.NewGuid(), LastName = "Lavoie", FirstName = "Émilie", EmailAdress = "emilie.lavoie@protonmail.com", PhoneNumber = "438-222-3344", DriverLicenceNumber = "D3456-220795-19", AddressId = addresses[3].Id },
+            new Driver { Id = Guid.NewGuid(), LastName = "Roy", FirstName = "Alexandre", EmailAdress = "alex.roy@live.ca", PhoneNumber = "(450) 666-7777", DriverLicenceNumber = "E7890-010203-22", AddressId = addresses[4].Id }
         };
-
         context.Drivers.AddRange(drivers);
+
+        await context.SaveChangesAsync();
 
         // Locations
         var locations = new List<Location>
