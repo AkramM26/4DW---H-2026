@@ -18,14 +18,14 @@
                 <div class="card-body p-4">
                     <form asp-action="Edit">
                         <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
-                        
+
                         <input type="hidden" asp-for="Id" />
                         <input type="hidden" asp-for="BranchId" />
 
                         <div class="row">
                             <div class="col-md-6 border-end">
                                 <h5 class="text-secondary mb-3 border-bottom pb-2">Identification</h5>
-                                
+
                                 <div class="mb-3">
                                     <label asp-for="Nickname" class="form-label fw-bold">Surnom / Code interne</label>
                                     <input asp-for="Nickname" class="form-control form-control-lg" />
@@ -41,7 +41,7 @@
                                     <label asp-for="Registration" class="form-label">Immatriculation</label>
                                     <input asp-for="Registration" class="form-control" />
                                 </div>
-                                
+
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
                                         <label asp-for="CarBrand" class="form-label">Marque</label>
@@ -50,6 +50,17 @@
                                     <div class="col-md-6 mb-3">
                                         <label asp-for="CarModel" class="form-label">Modèle</label>
                                         <input asp-for="CarModel" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label asp-for="Color" class="form-label">Couleur</label>
+                                        <input asp-for="Color" class="form-control" />
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label asp-for="Year" class="form-label">Année</label>
+                                        <input asp-for="Year" class="form-control" />
                                     </div>
                                 </div>
                             </div>
@@ -71,40 +82,40 @@
                                 <div class="p-3 bg-light rounded border mb-3">
                                     <div class="form-check form-switch mb-2">
                                         <input asp-for="Availability" class="form-check-input" type="checkbox" role="switch">
-                                            <label asp-for="Availability" class="form-check-label fw-bold">Disponible pour location</label>
-                                        </div>
-                                        <div class="form-check form-switch">
-                                            <input asp-for="State" class="form-check-input" type="checkbox" role="switch">
-                                                <label asp-for="State" class="form-check-label fw-bold">Bon état mécanique</label>
-                                            </div>
-                                        </div>
-
-                                        <div class="mb-3">
-                                            <label asp-for="Mileage" class="form-label">Kilométrage</label>
-                                            <div class="input-group">
-                                                <input asp-for="Mileage" class="form-control" type="number" />
-                                                <span class="input-group-text">km</span>
-                                            </div>
-                                        </div>
+                                        <label asp-for="Availability" class="form-check-label fw-bold">Disponible pour location</label>
+                                    </div>
+                                    <div class="form-check form-switch">
+                                        <input asp-for="State" class="form-check-input" type="checkbox" role="switch">
+                                        <label asp-for="State" class="form-check-label fw-bold">Bon état mécanique</label>
                                     </div>
                                 </div>
 
-                                <hr class="my-4" />
-
-                                <div class="d-flex justify-content-end">
-                                    <button type="submit" class="btn btn-success btn-lg px-5 shadow">
-                                        <i class="bi bi-save me-2"></i> Enregistrer les modifications
-                                    </button>
+                                <div class="mb-3">
+                                    <label asp-for="Mileage" class="form-label">Kilométrage</label>
+                                    <div class="input-group">
+                                        <input asp-for="Mileage" class="form-control" type="number" />
+                                        <span class="input-group-text">km</span>
+                                    </div>
                                 </div>
-                            </form>
+                            </div>
                         </div>
-                    </div>
+
+                        <hr class="my-4" />
+
+                        <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn btn-success btn-lg px-5 shadow">
+                                <i class="bi bi-save me-2"></i> Enregistrer les modifications
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
+    </div>
+</div>
 
-        @section Scripts {
-            @{
-                await Html.RenderPartialAsync("_ValidationScriptsPartial");
-            }
-        }
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
