@@ -27,6 +27,7 @@ namespace TP1.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CarCreate model, Guid branchId)
         {
+
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -43,7 +44,7 @@ namespace TP1.Controllers
                 model.Mileage!,
                 model.Nickname!,
                 model.EstimatedValue!,
-                model.BrandId
+                model.BranchId
                 );
             Context.Cars.Add(car);
             await Context.SaveChangesAsync();
@@ -223,7 +224,7 @@ namespace TP1.Controllers
             var car = await Context.Cars.FindAsync(id);
             if (car == null) return NotFound();
 
-            car.Status = "Désactivé";
+            car.Status = "Actif";
             await Context.SaveChangesAsync();
 
             TempData["Success"] = $"Le véhicule {car.Nickname} a été restauré avec succès.";

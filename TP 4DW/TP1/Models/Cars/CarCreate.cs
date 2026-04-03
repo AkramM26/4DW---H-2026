@@ -51,7 +51,7 @@ namespace TP1.Models.Cars
         [DataType(DataType.Currency)]
         public required decimal EstimatedValue { get; set; }
 
-        public Guid BrandId { get; set; }
+        public Guid BranchId { get; set; }
 
 
 
