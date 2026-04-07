@@ -1,5 +1,6 @@
 ﻿using LocationManageCore.Domains;
 using LocationManagerCore.Domains;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Net;
 
 namespace LocationManageCore.Data
 {
-    public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : DbContext(options)
+    public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext<IdentityUser<Guid>, IdentityRole<Guid>, Guid>(options)
     {
         public DbSet<Car> Cars { get; set; }
         public DbSet<Branch> Branches { get; set; }
