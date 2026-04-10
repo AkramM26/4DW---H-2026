@@ -1,4 +1,5 @@
 using LocationManageCore.Data;
+using LocationManagerCore.Domains;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TP1.Models;
@@ -13,8 +14,11 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(connectionString));
 
-builder.Services.AddIdentity<IdentityUser<Guid>, IdentityRole<Guid>>()
+builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>()
+    //.AddRoles<AppUser>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
+
+
 
 // 2. Services MVC de base
 builder.Services.AddControllersWithViews();
