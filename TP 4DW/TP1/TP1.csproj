@@ -21,4 +21,9 @@
     <ProjectReference Include="..\LocationCarCore\LocationManagerCore.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\Users\" />
+    <Folder Include="Views\User\" />
+  </ItemGroup>
+
 </Project>

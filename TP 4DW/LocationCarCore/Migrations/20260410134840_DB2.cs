@@ -5,7 +5,7 @@
 namespace LocationManagerCore.Migrations
 {
     /// <inheritdoc />
-    public partial class DBB : Migration
+    public partial class DB2 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

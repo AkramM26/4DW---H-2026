@@ -1,10 +1,13 @@
 ﻿using LocationManageCore.Data;
 using LocationManagerCore.Domains;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TP1.Models.Branches;
 
 namespace TP1.Controllers;
+
+[Authorize]
 
 public class BranchController(ApplicationDbContext context) : Controller
 {
