@@ -1,6 +1,7 @@
 ﻿using LocationManageCore.Data;
 using LocationManageCore.Domains;
 using LocationManagerCore.Domains;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 public static class SeedData
@@ -75,6 +76,19 @@ public static class SeedData
         };
 
         context.Locations.AddRange(locations);
+
+        await context.SaveChangesAsync();
+
+        // Roles
+        var roles = new List<IdentityRole<Guid>>
+        {
+            new IdentityRole<Guid> { Name = TP1.Constantes.Roles.ADMIN, NormalizedName = TP1.Constantes.Roles.ADMIN.ToUpper(), ConcurrencyStamp = Guid.NewGuid().ToString() },
+            new IdentityRole<Guid> { Name = TP1.Constantes.Roles.MANAGER, NormalizedName = TP1.Constantes.Roles.MANAGER.ToUpper(), ConcurrencyStamp = Guid.NewGuid().ToString() },
+            new IdentityRole<Guid> { Name = TP1.Constantes.Roles.CLERK, NormalizedName = TP1.Constantes.Roles.CLERK.ToUpper(), ConcurrencyStamp = Guid.NewGuid().ToString() },
+            new IdentityRole<Guid> { Name = TP1.Constantes.Roles.USER, NormalizedName = TP1.Constantes.Roles.USER.ToUpper(), ConcurrencyStamp = Guid.NewGuid().ToString() }
+        };
+
+        context.Roles.AddRange(roles);
 
         await context.SaveChangesAsync();
     }

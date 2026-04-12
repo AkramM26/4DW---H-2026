@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LocationManagerCore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260410134840_DB2")]
-    partial class DB2
+    [Migration("20260411155507_problemeAspNetUsers")]
+    partial class problemeAspNetUsers
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

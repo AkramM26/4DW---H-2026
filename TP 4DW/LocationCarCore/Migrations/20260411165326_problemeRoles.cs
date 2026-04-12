@@ -5,7 +5,7 @@
 namespace LocationManagerCore.Migrations
 {
     /// <inheritdoc />
-    public partial class DB2 : Migration
+    public partial class problemeRoles : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
