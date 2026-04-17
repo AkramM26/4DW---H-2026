@@ -27,7 +27,7 @@ namespace TP1.Controllers
 
         public IActionResult Create(Guid branchId)
         {
-            return View();
+            return View(CarCreateFactory.Create(branchId));
         }
 
         [HttpPost]

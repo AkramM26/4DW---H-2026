@@ -9,9 +9,11 @@ namespace TP1.Models.Account
         [HiddenInput]
         public string? ReturnUrl { get; set; } = null;
 
+        [Required]
         [DisplayName("User Name")]
         public string? Username { get; set; }
 
+        [Required]
         [DisplayName("Password")]
         [DataType(DataType.Password)]
         public string? Password { get; set; }
