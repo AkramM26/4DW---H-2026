@@ -3,6 +3,7 @@ using LocationManagerCore.Domains;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using TP1.Constantes;
 using TP1.Models.Branches;
 
 namespace TP1.Controllers;
@@ -39,12 +40,14 @@ public class BranchController(ApplicationDbContext context) : Controller
     }
 
     [HttpGet]
+    [Authorize(Roles = Roles.ADMIN)]
     public IActionResult Create()
     {
         return View();
     }
 
     [HttpPost]
+    [Authorize(Roles = Roles.ADMIN)]
     public async Task<IActionResult> Create(BranchCreate model)
     {
         if (!ModelState.IsValid) return View(model);

@@ -27,9 +27,13 @@
                 <h1 class="fw-bold mb-0 text-white"><i class="bi bi-buildings me-2"></i>Réseau de Succursales</h1>
                 <p class="mb-0 opacity-75">Gérez vos points de service et surveillez l'état de la flotte en temps réel.</p>
             </div>
-            <a asp-action="Create" class="btn btn-light btn-lg shadow-sm px-4 fw-bold text-primary">
-                <i class="bi bi-plus-lg me-1"></i> Ajouter une succursale
-            </a>
+
+            @if (User.IsInRole("Admin"))
+            {
+                <a asp-action="Create" class="btn btn-light btn-lg shadow-sm px-4 fw-bold text-primary">
+                    <i class="bi bi-plus-lg me-1"></i> Ajouter une succursale
+                </a>
+            }
         </div>
     </div>
 
@@ -83,13 +87,13 @@
                                         <a asp-action="List" asp-controller="Car" asp-route-branchId="@item.BranchId" class="btn btn-primary shadow-sm" style="min-width: 110px;">
                                             <i class="bi bi-search me-1"></i> Inventaire
                                         </a>
-        
+
                                         <a asp-action="Edit" asp-route-branchId="@item.BranchId" class="btn btn-outline-secondary shadow-sm" style="min-width: 85px;">
                                             <i class="bi bi-pencil me-1"></i> Éditer
                                         </a>
-        
+
                                         <a asp-action="Delete" asp-route-branchId="@item.BranchId" class="btn btn-outline-danger shadow-sm" style="min-width: 95px;"
-                                               onclick="return confirm('Attention : Supprimer cette succursale supprimera tout son historique. Confirmer ?');">
+                                           onclick="return confirm('Attention : Supprimer cette succursale supprimera tout son historique. Confirmer ?');">
                                             <i class="bi bi-trash me-1"></i> Retirer
                                         </a>
                                     </div>

@@ -3,6 +3,7 @@ using LocationManageCore.Domains;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using TP1.Constantes;
 using TP1.Models.Cars;
 
 namespace TP1.Controllers
@@ -20,14 +21,17 @@ namespace TP1.Controllers
         }
 
 
-
         [HttpGet]
+        [Authorize(Roles = Roles.MANAGER)]
+        [Authorize(Roles = Roles.ADMIN)]
+
         public IActionResult Create(Guid branchId)
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize(Roles = Roles.MANAGER)]
         public async Task<IActionResult> Create(CarCreate model, Guid branchId)
         {
 

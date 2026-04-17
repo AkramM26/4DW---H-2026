@@ -11,7 +11,8 @@ using TP1.Models.Cars;
 
 namespace TP1.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = Roles.ADMIN)]
+
 
     public class AccountController(
         UserManager<AppUser> userManager,
