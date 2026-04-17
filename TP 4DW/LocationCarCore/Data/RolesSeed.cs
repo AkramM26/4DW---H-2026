@@ -7,7 +7,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-using TP1.Constantes;
+//using TP1.Constantes;
 
 namespace LocationManagerCore.Data
 {
