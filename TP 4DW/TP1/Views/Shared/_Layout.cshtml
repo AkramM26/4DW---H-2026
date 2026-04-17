@@ -37,6 +37,10 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-controller="Account" asp-action="RegisteredList">Listes des profils enregistrés</a>
                             </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Account" asp-action="Register">Création d'usager</a>
+                            </li>
                         }
                     </ul>
                 </div>
@@ -45,7 +49,6 @@
                 @if (User?.Identity?.IsAuthenticated ?? false) // ??: si un des deux est null met le à false
                 {
                     <div class="float-end">
-
                         @if (User.IsInRole("Admin"))
                         {
                             <span>Admin</span>
@@ -62,8 +65,7 @@
                         {
                             <span>User</span>
                         }
-
-
+                        <br />
                         <form method="post" asp-action="Logout" asp-controller="Account">
                             <input type="submit" value="Log Out" class="nav-link text-dark" />
                         </form>

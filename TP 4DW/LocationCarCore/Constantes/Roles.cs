@@ -6,5 +6,6 @@
         public const string MANAGER = "Manager";
         public const string CLERK = "Clerk";
         public const string USER = "User";
-    }                        
-}                            
+    }
+
+}

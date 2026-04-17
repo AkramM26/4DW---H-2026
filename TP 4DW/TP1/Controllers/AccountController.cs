@@ -1,14 +1,19 @@
 ﻿using LocationManageCore.Data;
 using LocationManagerCore.Domains;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using TP1.Constantes;
 using TP1.Models.Account;
 using TP1.Models.Cars;
 
 namespace TP1.Controllers
 {
+    [Authorize(Roles = Roles.ADMIN)]
+
+
     public class AccountController(
         UserManager<AppUser> userManager,
         SignInManager<AppUser> signInManager) 
@@ -71,6 +76,7 @@ namespace TP1.Controllers
         }
 
         // GET : /Account/Login(returnUrl)
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult LogIn(string? returnUrl = null)
         {
@@ -81,6 +87,7 @@ namespace TP1.Controllers
         }
 
         //POST: /Account/Login(ViewModel)
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> LogIn(LoginViewModel vm)
         {
@@ -119,8 +126,10 @@ namespace TP1.Controllers
         public async Task<IActionResult> RegisteredList()
         {
             var Users = await UserManager.Users.ToListAsync();
+            //var Users = await Context.Users.ToListAsync();
             return View(Users);
         }
+
 
         [HttpGet]
         public async Task<IActionResult> Delete(string name)
@@ -131,6 +140,10 @@ namespace TP1.Controllers
             return RedirectToAction(nameof(RegisteredList));
 
         }
+
+   
+
+
 
     }
 }

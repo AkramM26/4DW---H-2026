@@ -1,4 +1,5 @@
 using LocationManageCore.Data;
+using LocationManagerCore.Data;
 using LocationManagerCore.Domains;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +16,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(connectionString));
 
 builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>()
-    //.AddRoles<AppUser>()
+    .AddRoles<IdentityRole<Guid>>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 
@@ -34,8 +35,12 @@ if (!app.Environment.IsDevelopment())
 
 using (var scope = app.Services.CreateScope())
 {
+    var services = scope.ServiceProvider;
     var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     await SeedData.InitializeAsync(context);
+    await RolesSeed.SeedRolesAsync(services);
+    await RolesSeed.SeedAdminsAsync(services);
+
 }
 
 app.UseHttpsRedirection();
