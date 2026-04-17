@@ -2,9 +2,11 @@
 using LocationManageCore.Domains;
 using LocationManagerCore.Domains;
 using Microsoft.EntityFrameworkCore;
+using TP1.Constantes;
 
 public static class SeedData
 {
+
     public static async Task InitializeAsync(ApplicationDbContext context)
     {
         await context.Database.EnsureCreatedAsync();

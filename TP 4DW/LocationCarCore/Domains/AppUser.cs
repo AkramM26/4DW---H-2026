@@ -19,7 +19,6 @@ namespace LocationManagerCore.Domains
         public string LastName { get; set; }
 
         [NotMapped]
-
         public string FirstName { get; set; }
 
         [NotMapped]
@@ -44,10 +43,11 @@ namespace LocationManagerCore.Domains
                 FullName = fullName,
                 Email = email,
                 NormalizedEmail = email.ToUpper() // Bonne pratique
-
             };
 
         }
+
+
 
         //public static AppUser Create(string username, string email)
         //{

@@ -1,11 +1,14 @@
 ﻿using LocationManageCore.Data;
 using LocationManageCore.Domains;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TP1.Models.Cars;
 
 namespace TP1.Controllers
 {
+    [Authorize]
+
     public class CarController(ApplicationDbContext context) : Controller
     {
         private readonly ApplicationDbContext Context = context;

@@ -1,12 +1,15 @@
 ﻿using LocationManageCore.Data;
 using LocationManageCore.Domains;
 using LocationManagerCore.Domains;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using TP1.Models.Drivers;
 namespace TP1.Controllers
 {
+    [Authorize]
+
     public class DriversController : Controller
     {
         // Réference à DbContext

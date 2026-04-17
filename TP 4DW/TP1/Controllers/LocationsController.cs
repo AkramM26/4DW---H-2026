@@ -1,10 +1,13 @@
 ﻿using LocationManageCore.Data;
 using LocationManagerCore.Domains;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace TP1.Controllers
 {
+    [Authorize]
+
     public class LocationsController : Controller
     {
         private readonly ApplicationDbContext _context;
