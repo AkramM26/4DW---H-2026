@@ -45,6 +45,25 @@
                 @if (User?.Identity?.IsAuthenticated ?? false) // ??: si un des deux est null met le à false
                 {
                     <div class="float-end">
+
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <span>Admin</span>
+                        }
+                        else if (User.IsInRole("Manager"))
+                        {
+                            <span>Manager</span>
+                        }
+                        else if (User.IsInRole("Clerk"))
+                        {
+                            <span>Clerk</span>
+                        }
+                        else if (User.IsInRole("User"))
+                        {
+                            <span>User</span>
+                        }
+
+
                         <form method="post" asp-action="Logout" asp-controller="Account">
                             <input type="submit" value="Log Out" class="nav-link text-dark" />
                         </form>
