@@ -55,7 +55,7 @@ namespace TP1.Controllers
                 return View(vm);
             }
 
-            //Assignation du rôle 
+            // Assignation du rôle 
             await userManager.AddToRoleAsync(newUser, vm.Role);
 
             //Rediriger vers la page de connextion OU page d'accueil
