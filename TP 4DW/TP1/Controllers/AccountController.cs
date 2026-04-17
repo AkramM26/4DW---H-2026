@@ -114,6 +114,7 @@ namespace TP1.Controllers
         // GET : /Account/Logout
         // GET: /Account/Logout
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Logout()
         {

@@ -10,7 +10,7 @@
             <h2 class="fw-bold mb-0 text-dark"><i class="bi bi-car-front-fill me-2"></i>Gestion de la flotte</h2>
             <p class="text-muted mb-0">Liste des véhicules pour la succursale sélectionnée</p>
         </div>
-        @if (!User.IsInRole("Clerk") || !User.IsInRole("User"))
+        @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
         {
             <a asp-action="Create" asp-route-branchId="@Model.First().BranchId" class="btn btn-primary shadow-sm">
                 <i class="bi bi-plus-lg me-1"></i> Nouveau véhicule
