@@ -11,16 +11,21 @@ namespace TP1.Models.Account
     {
         [Required] 
         [DisplayName("User Name")]
+        [StringLength(20, MinimumLength = 5, ErrorMessage = "Le nom d'utilisateur doit avoir entre 5 et 20 caractères.")]
+        [RegularExpression(@"^[a-zA-Z0-9_-]+$", ErrorMessage = "Le nom d'utilisateur ne doit contenir que des lettres, chiffres, tirets ou underscores.")]
         public string? UserName { get; set; }
 
         [Required]
         [NotMapped]
         [DisplayName("FullName")]
+        [StringLength(50, MinimumLength = 5, ErrorMessage = "Le nom complet doit avoir entre 5 et 50 caractères.")]
+        [RegularExpression(@"^[a-zA-ZÀ-ÿ\s\-]*$", ErrorMessage = "Le nom complet ne peut contenir que des lettres, tirets ou espaces.")]
         public string? FullName { get; set; }
 
         [Required]
         [DisplayName("Email Address")]
         [DataType(DataType.EmailAddress)]
+        [EmailAddress(ErrorMessage = "Le format de l'adresse courriel n'est pas valide.")]
         public string? EmailAddress { get; set; }
 
         [Required]

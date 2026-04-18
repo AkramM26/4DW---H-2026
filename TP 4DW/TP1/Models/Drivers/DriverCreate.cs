@@ -9,6 +9,7 @@ namespace TP1.Models.Drivers
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();
 
+        [Required]
         [StringLength(50, MinimumLength = 3, ErrorMessage = "Le nom doit avoir entre 3 et 50 caractères.")]
         [RegularExpression(@"^[a-zA-ZÀ-ÿ\s\-]*$", ErrorMessage = "Le nom ne doit contenir que des lettres.")]
         [Display(Name = "Nom")]
