@@ -16,21 +16,28 @@ namespace TP1.Controllers
 
     public class AccountController(
         UserManager<AppUser> userManager,
-        SignInManager<AppUser> signInManager) 
+        SignInManager<AppUser> signInManager,
+        ApplicationDbContext context)
         : Controller
     {
         private readonly UserManager<AppUser> UserManager = userManager;
         private readonly SignInManager<AppUser> SignInManager = signInManager;
-
-
+        private readonly ApplicationDbContext Context = context;
 
         [HttpGet]
-        public IActionResult Register()
+        [Authorize(Roles = Roles.ADMIN)]
+        public async Task<IActionResult> Register()
         {
+            // Récupération des succursales pour une liste déroulante
+            ViewBag.Branches = await context.Branches
+                .Where(b => b.Status)
+                .ToListAsync();
+
             return View();
         }
 
         [HttpPost]
+        [Authorize(Roles = Roles.ADMIN)]
         public async Task<IActionResult> Register(AccountRegistration vm)
         {
             if (!ModelState.IsValid)
@@ -43,7 +50,10 @@ namespace TP1.Controllers
 
             // Créer l'entité utilisateur
             var newUser = AppUser.Create(
-                vm.UserName!, vm.FullName!, vm.EmailAddress!
+                    vm.UserName!,
+                    vm.FullName!,
+                    vm.EmailAddress!,
+                    vm.BranchId
                 );
 
             //// Ajouter l'utilisate

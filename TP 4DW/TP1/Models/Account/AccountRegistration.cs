@@ -43,6 +43,10 @@ namespace TP1.Models.Account
         [DisplayName("Role")]
         public string? Role { get; set; }
 
+        [Display(Name = "Succursale associée")]
+        public Guid BranchId { get; set; }
+
+
         //[Required]
         //[DisplayName("Agree To Terms and Conditions")]
         //public bool AgreeToTerms { get; set; } = false;

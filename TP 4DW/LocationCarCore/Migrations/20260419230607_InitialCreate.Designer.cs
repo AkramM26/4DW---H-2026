@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LocationManagerCore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260411155507_problemeAspNetUsers")]
-    partial class problemeAspNetUsers
+    [Migration("20260419230607_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -123,6 +123,9 @@ namespace LocationManagerCore.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("INTEGER");
 
+                    b.Property<Guid>("BranchId")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("TEXT");
@@ -172,6 +175,8 @@ namespace LocationManagerCore.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BranchId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -423,6 +428,17 @@ namespace LocationManagerCore.Migrations
                 {
                     b.HasOne("LocationManagerCore.Domains.Branch", "Branch")
                         .WithMany("Cars")
+                        .HasForeignKey("BranchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Branch");
+                });
+
+            modelBuilder.Entity("LocationManagerCore.Domains.AppUser", b =>
+                {
+                    b.HasOne("LocationManagerCore.Domains.Branch", "Branch")
+                        .WithMany()
                         .HasForeignKey("BranchId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
