@@ -1,6 +1,7 @@
 ﻿using LocationManageCore.Data;
 using LocationManagerCore.Domains;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,10 +12,12 @@ namespace TP1.Controllers
     public class LocationsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<AppUser> _userManager;
 
-        public LocationsController(ApplicationDbContext context)
+        public LocationsController(ApplicationDbContext context, UserManager<AppUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // UC15 : liste des locations
@@ -57,6 +60,33 @@ namespace TP1.Controllers
             }
 
             return View(location);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Close(Guid id)
+        {
+            var location = await _context.Locations
+                .Include(l => l.Car)
+                .FirstOrDefaultAsync(l => l.Id == id);
+
+            if (location == null) return NotFound();
+
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null) return Unauthorized();
+
+            location.Status = false;
+            location.OfficialClosing = DateTime.Now;
+
+            if (location.Car != null)
+            {
+                location.Car.Availability = true; 
+                location.Car.BranchId = user.BranchId; 
+            }
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }

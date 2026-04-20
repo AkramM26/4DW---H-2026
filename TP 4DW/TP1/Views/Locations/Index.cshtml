@@ -70,6 +70,16 @@
                                     <a asp-action="Details" asp-route-id="@loc.Id" class="btn btn-sm btn-primary px-3 shadow-sm">
                                         <i class="bi bi-search me-1"></i> Consulter
                                     </a>
+
+                                    @if (loc.Status)
+                                    {
+                                        <form asp-action="Close" asp-route-id="@loc.Id" method="post" style="display:inline;">
+                                            <button type="submit" class="btn btn-sm btn-success px-3 shadow-sm ms-1"
+                                                    onclick="return confirm('Confirmer le retour du véhicule @loc.Car.Nickname ?');">
+                                                <i class="bi bi-check2-circle me-1"></i> Retourner
+                                            </button>
+                                        </form>
+                                    }
                                 </td>
                             </tr>
                         }

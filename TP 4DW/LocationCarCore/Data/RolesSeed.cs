@@ -62,8 +62,8 @@ namespace LocationManagerCore.Data
                 await userManager.CreateAsync(Admin, "L'Admin1234*");
                 await userManager.AddToRoleAsync(Admin, Roles.ADMIN);
             }
-        }
 
+        }
     }
 }
 
