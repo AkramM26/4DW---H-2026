@@ -29,24 +29,19 @@ namespace LocationManagerCore.Domains
 
         public string Role { get; set; }
 
-        public Guid BranchId { get; set; }
-        public virtual Branch Branch { get; set; }
-
         private AppUser(string username) : base (username) { }
 
         public static AppUser Create(
            string userName,
            string fullName,
-           string email,
-           Guid branchId)
+           string email)
         {
             return new(userName)
             {
                 Id = Guid.NewGuid(),
                 FullName = fullName,
                 Email = email,
-                NormalizedEmail = email.ToUpper(),
-                BranchId = branchId
+                NormalizedEmail = email.ToUpper()
             };
         }
     }

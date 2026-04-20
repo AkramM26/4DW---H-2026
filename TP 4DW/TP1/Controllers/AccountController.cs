@@ -52,8 +52,7 @@ namespace TP1.Controllers
             var newUser = AppUser.Create(
                     vm.UserName!,
                     vm.FullName!,
-                    vm.EmailAddress!,
-                    vm.BranchId
+                    vm.EmailAddress!
                 );
 
             //// Ajouter l'utilisate
@@ -74,13 +73,13 @@ namespace TP1.Controllers
             await userManager.AddToRoleAsync(newUser, vm.Role);
 
             //Rediriger vers la page de connextion OU page d'accueil
-            var signInResult = await signInManager.PasswordSignInAsync(
-                newUser, vm.Password!,
-                isPersistent: false, //Rememberme?
-                lockoutOnFailure: false);
+            //var signInResult = await signInManager.PasswordSignInAsync(
+            //    newUser, vm.Password!,
+            //    isPersistent: false, //Rememberme?
+            //    lockoutOnFailure: false);
 
-            if (!signInResult.Succeeded)
-                ModelState.AddModelError(string.Empty, " Une erreur est survenue lors de votre connexion");
+            //if (!signInResult.Succeeded)
+            //    ModelState.AddModelError(string.Empty, " Une erreur est survenue lors de votre connexion");
 
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }

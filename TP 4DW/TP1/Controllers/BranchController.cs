@@ -21,7 +21,7 @@ public class BranchController(ApplicationDbContext context) : Controller
     {
         return RedirectToAction(nameof(List));
     }
-
+    [AllowAnonymous]
     [HttpGet]
     public async Task<IActionResult> List()
     {
@@ -41,7 +41,6 @@ public class BranchController(ApplicationDbContext context) : Controller
     }
 
     [HttpGet]
-    [Authorize(Roles = Roles.ADMIN)]
     public IActionResult Create()
     {
         return View();

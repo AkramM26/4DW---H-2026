@@ -57,7 +57,7 @@ namespace LocationManagerCore.Data
                 }
 
                 // création de l'admin
-                Admin = AppUser.Create("Admin", "Administrateur", "admin@gmail.com", defaultBranch.BranchId);
+                Admin = AppUser.Create("Admin", "Administrateur", "admin@gmail.com");
 
                 await userManager.CreateAsync(Admin, "L'Admin1234*");
                 await userManager.AddToRoleAsync(Admin, Roles.ADMIN);

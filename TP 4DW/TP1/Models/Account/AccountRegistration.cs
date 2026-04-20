@@ -43,8 +43,8 @@ namespace TP1.Models.Account
         [DisplayName("Role")]
         public string? Role { get; set; }
 
-        [Display(Name = "Succursale associée")]
-        public Guid BranchId { get; set; }
+        //[Display(Name = "Succursale associée")]
+        //public Guid BranchId { get; set; }
 
 
         //[Required]

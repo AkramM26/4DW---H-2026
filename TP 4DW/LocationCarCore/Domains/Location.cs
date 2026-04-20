@@ -13,7 +13,7 @@ namespace LocationManagerCore.Domains
         public Car Car { get; set; }
         public Guid DriverId { get; set; }
         public Driver Driver { get; set; }
-        public ICollection<Note>? Notes { get; set; }
+        public ICollection<Note>? Notes { get; set; } = new List<Note>();
 
 
         public static Location Create(

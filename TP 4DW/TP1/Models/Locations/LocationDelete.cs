@@ -10,6 +10,8 @@ namespace TP1.Models.Locations
         [DataType(DataType.DateTime)]
         public DateTime? OfficialClosing { get; set; }
 
+        public Guid BranchId { get; set; }
+
 
 
         public string? Note { get; set; }
