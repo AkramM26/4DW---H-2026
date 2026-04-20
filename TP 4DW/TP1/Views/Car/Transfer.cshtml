@@ -1,0 +1,28 @@
+﻿@model LocationManageCore.Domains.Car
+@{
+    ViewData["Title"] = "Transfert de véhicule";
+}
+
+<h2>Transfert manuel du véhicule</h2>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h5 class="card-title">@Model.Nickname (@Model.CarModel)</h5>
+        <p>Succursale actuelle : <strong>@Model.Branch?.Name</strong></p>
+        <hr />
+
+        <form asp-action="Transfer" method="post">
+            <input type="hidden" asp-for="Id" />
+
+            <div class="form-group mb-3">
+                <label class="control-label">Choisir la succursale de destination :</label>
+                <select name="newBranchId" class="form-select"
+                        asp-items="@(new SelectList(ViewBag.Branches, "BranchId", "Name"))">
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-warning">Confirmer le transfert</button>
+            <a asp-action="Index" class="btn btn-secondary">Annuler</a>
+        </form>
+    </div>
+</div>

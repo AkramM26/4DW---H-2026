@@ -2,6 +2,7 @@
 using LocationManageCore.Domains;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TP1.Constantes;
 using TP1.Models.Cars;
@@ -236,6 +237,43 @@ namespace TP1.Controllers
 
             TempData["Success"] = $"Le véhicule {car.Nickname} a été restauré avec succès.";
             return RedirectToAction(nameof(ArchivedList));
+        }
+
+        // Exemple :
+        // GET: Cars/Transfer/5
+        //[Authorize(Roles = "MANAGER, ADMIN")]
+        public async Task<IActionResult> Transfer(Guid? id)
+        {
+            if (id == null) return NotFound();
+
+            var car = await context.Cars
+                .Include(c => c.Branch)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (car == null) return NotFound();
+
+            // Préparation de la liste des succursales pour menu déroulant
+            ViewBag.Branches = await context.Branches.ToListAsync();
+            return View(car);
+        }
+
+        // POST: Cars/Transfer/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        //[Authorize(Roles = "MANAGER, ADMIN")]
+        public async Task<IActionResult> Transfer(Guid id, Guid newBranchId)
+        {
+            var car = await context.Cars.FindAsync(id);
+            if (car == null) return NotFound();
+
+            // pour UC21
+            car.BranchId = newBranchId;
+
+            await context.SaveChangesAsync();
+
+            TempData["Success"] = $"Le véhicule {car.Nickname} a été transféré avec succès.";
+
+            return RedirectToAction("List", new { branchId = car.BranchId });
         }
     }
 }

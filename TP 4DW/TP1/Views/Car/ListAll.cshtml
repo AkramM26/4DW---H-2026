@@ -39,13 +39,16 @@
                                     <div class="fw-bold text-primary">@item.Nickname</div>
                                     <small class="text-muted"><i class="bi bi-geo-alt-fill"></i> ID Succursale: @item.BranchId.ToString().Substring(0, 8)...</small>
                                 </td>
+
                                 <td>
                                     <div class="fw-bold">@item.CarBrand @item.CarModel</div>
                                     <div class="small text-muted">Année : @item.Year</div>
                                 </td>
+
                                 <td>
                                     <span class="badge bg-light text-dark border font-monospace">@item.Registration</span>
                                 </td>
+
                                 <td>
                                     @if (item.Status == "Actif")
                                     {
@@ -64,6 +67,7 @@
                                         <span class="badge rounded-pill bg-secondary px-3">@item.Status</span>
                                     }
                                 </td>
+
                                 <td>
                                     @if (item.Availability)
                                     {
@@ -80,6 +84,14 @@
                                         <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info text-white shadow-sm d-flex align-items-center justify-content-center" style="min-width: 75px;">
                                             <i class="bi bi-search me-1"></i> Voir
                                         </a>
+
+                                        @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+                                        {
+                                            <a asp-action="Transfer" asp-route-id="@item.Id" class="btn btn-sm btn-warning text-dark shadow-sm d-flex align-items-center justify-content-center" style="min-width: 95px;">
+                                                <i class="bi bi-truck me-1"></i> Transférer
+                                            </a>
+                                        }
+
                                         <a asp-action="Edit" asp-route-id="@item.Id" asp-route-branchId="@item.BranchId" class="btn btn-sm btn-primary shadow-sm d-flex align-items-center justify-content-center" style="min-width: 75px;">
                                             <i class="bi bi-pencil-fill me-1"></i> Éditer
                                         </a>

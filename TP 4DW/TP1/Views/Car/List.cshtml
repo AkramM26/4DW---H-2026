@@ -40,51 +40,47 @@
                                     <div class="fw-bold text-primary">@item.Nickname</div>
                                     <small class="text-muted">NIV: @item.SerialNumber</small>
                                 </td>
+
                                 <td>
                                     <div class="fw-bold">@item.CarBrand</div>
                                     <div class="small text-muted">@item.CarModel (@item.Year)</div>
                                 </td>
+
                                 <td>
-                                    <span class="badge bg-light text-dark border">@item.Registration</span>
+                                    <span class="badge bg-light text-dark border font-monospace">@item.Registration</span>
                                 </td>
+
                                 <td>
                                     <span class="badge rounded-pill @(item.Status == "Actif" ? "bg-success" : "bg-warning text-dark")">
                                         <i class="bi @(item.Status == "Actif" ? "bi-check-circle" : "bi-exclamation-triangle") me-1"></i>
                                         @item.Status
                                     </span>
                                 </td>
+
                                 <td>
                                     @if (item.Availability)
                                     {
-                                        <span class="text-success small fw-bold"><i class="bi bi-circle-fill me-1 small"></i> Disponible</span>
+                                        <span class="text-success small fw-bold"><i class="bi bi-circle-fill me-1 small"></i> En stock</span>
                                     }
                                     else
                                     {
-                                        <span class="text-danger small fw-bold"><i class="bi bi-circle-fill me-1 small"></i> Louée</span>
+                                        <span class="text-danger small fw-bold"><i class="bi bi-circle-fill me-1 small"></i> En location</span>
                                     }
                                 </td>
+
                                 <td class="text-center px-4">
                                     <div class="d-flex justify-content-center gap-2">
-                                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info text-white shadow-sm d-flex align-items-center justify-content-center" style="min-width: 75px;">
-                                            <i class="bi bi-eye me-1"></i> Voir
+                                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info text-white shadow-sm d-flex align-items-center justify-content-center" style="min-width: 40px;">
+                                            <i class="bi bi-search"></i>
                                         </a>
-                                        <a asp-action="Edit" asp-route-id="@item.Id" asp-route-branchId="@item.BranchId" class="btn btn-sm btn-primary shadow-sm d-flex align-items-center justify-content-center" style="min-width: 75px;">
-                                            <i class="bi bi-pencil me-1"></i> Éditer
+
+                                        <a asp-action="Transfer" asp-route-id="@item.Id" class="btn btn-sm btn-warning text-dark shadow-sm d-flex align-items-center justify-content-center" style="min-width: 40px;">
+                                            <i class="bi bi-truck"></i>
                                         </a>
-                                        @if (item.Status == "Désactivé")
-                                        {
-                                            <form asp-action="Archive" method="post" style="display:inline;" onsubmit="return confirm('Êtes-vous sûr de vouloir archiver définitivement ce véhicule ?');">
-                                                <input type="hidden" name="id" value="@item.Id" />
-                                                <input type="hidden" name="branchId" value="@item.BranchId" />
-                                                <button type="submit" class="btn btn-sm btn-danger shadow-sm d-flex align-items-center justify-content-center" style="min-width: 95px;">
-                                                    <i class="bi bi-archive-fill me-1"></i> Archiver
-                                                </button>
-                                            </form>
-                                        }
-                                        else
-                                        {
-                                            <div style="min-width: 95px;"></div>
-                                        }
+
+                                        <a asp-action="Edit" asp-route-id="@item.Id" asp-route-branchId="@item.BranchId" class="btn btn-sm btn-primary shadow-sm d-flex align-items-center justify-content-center" style="min-width: 40px;">
+                                            <i class="bi bi-pencil-fill"></i>
+                                        </a>
                                     </div>
                                 </td>
                             </tr>
