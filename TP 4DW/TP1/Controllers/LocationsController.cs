@@ -20,8 +20,13 @@ namespace TP1.Controllers
 
     public class LocationsController(ApplicationDbContext context) : Controller
     {
-        private readonly ApplicationDbContext Context;
+        private readonly ApplicationDbContext Context = context;
 
+        [HttpGet]
+        public async Task<IActionResult> Create(LocationCreate model, Guid BrandId)
+        {
+            return View (LocationCreateFactory.Create(BrandId));
+        }
 
 
         [HttpPost]
@@ -136,16 +141,23 @@ namespace TP1.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Details(LocationDelete model, Guid? id, Guid BranchId)
+        public async Task<IActionResult> Delete(LocationDelete model, Guid? id, Guid BranchId)
         {
             var car = await Context.Cars.FindAsync(id);
-            var location = Context.Locations.Where(l => l.Id == id).FirstOrDefault();
+            var location = Context.Locations.Where(l => l.CarId == id).FirstOrDefault();
 
             if (location == null) 
                 return NotFound();  
 
             location.OfficialClosing= model.OfficialClosing;
             car.Availability = true;
+            var note = Note.Create(model.Note);
+            Context.SaveChangesAsync();
+
+
+            location.Notes.Add(note);
+
+            Context.SaveChangesAsync();
 
 
             TempData["SuccessMessage"] = "La location a été fermée avec succès ";

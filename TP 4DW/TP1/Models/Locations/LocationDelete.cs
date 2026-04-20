@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using LocationManagerCore.Domains;
+using System.ComponentModel.DataAnnotations;
 
 namespace TP1.Models.Locations
 {
