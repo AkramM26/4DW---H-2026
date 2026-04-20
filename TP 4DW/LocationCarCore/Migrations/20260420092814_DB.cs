@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace LocationManagerCore.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class DB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

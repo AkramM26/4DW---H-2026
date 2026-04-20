@@ -8,7 +8,9 @@ using Microsoft.CodeAnalysis.Operations;
 using Microsoft.DotNet.Scaffolding.Shared.Project;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Xml.Linq;
 using TP1.Constantes;
+using TP1.Models.Account;
 using TP1.Models.Cars;
 using TP1.Models.Locations;
 
@@ -18,13 +20,9 @@ namespace TP1.Controllers
 
     public class LocationsController(ApplicationDbContext context) : Controller
     {
-        private readonly ApplicationDbContext _context;
-        private readonly UserManager<AppUser> _userManager;
+        private readonly ApplicationDbContext Context;
 
-        public LocationsController(ApplicationDbContext context, UserManager<AppUser> userManager)
-        {
-            return View(model);
-        }
+
 
         [HttpPost]
         public async Task<IActionResult> Create(LocationCreate model, int a)
@@ -131,30 +129,32 @@ namespace TP1.Controllers
         }
 
 
-        [HttpPost]
-        public async Task<IActionResult> Close(Guid id)
+        [HttpGet]
+        public async Task<IActionResult> Delete(LocationDelete model)
         {
-            var location = await _context.Locations
-                .Include(l => l.Car)
-                .FirstOrDefaultAsync(l => l.Id == id);
-
-            if (location == null) return NotFound();
-
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null) return Unauthorized();
-
-            location.Status = false;
-            location.OfficialClosing = DateTime.Now;
-
-            if (location.Car != null)
-            {
-                location.Car.Availability = true; 
-                location.Car.BranchId = user.BranchId; 
-            }
-
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction(nameof(Index));
+            return View(model);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Details(LocationDelete model, Guid? id, Guid BranchId)
+        {
+            var car = await Context.Cars.FindAsync(id);
+            var location = Context.Locations.Where(l => l.Id == id).FirstOrDefault();
+
+            if (location == null) 
+                return NotFound();  
+
+            location.OfficialClosing= model.OfficialClosing;
+            car.Availability = true;
+
+
+            TempData["SuccessMessage"] = "La location a été fermée avec succès ";
+
+            return RedirectToAction("List", "Car", new { branchId = BranchId });
+
+
+        }
+
+
     }
 }
