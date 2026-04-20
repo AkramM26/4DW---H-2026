@@ -3,8 +3,10 @@ using LocationManageCore.Domains;
 using LocationManagerCore.Domains;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.Operations;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using TP1.Models.Cars;
 using TP1.Models.Drivers;
 namespace TP1.Controllers
 {
@@ -67,17 +69,18 @@ namespace TP1.Controllers
         {
             try
             {
-                if (!ModelState.IsValid) // revoir les validations 
+                if (!ModelState.IsValid)
                 {
                     return View(model);
                 }
 
-                var driver = Driver.Create(
+                var driver = Driver.CreateWA(
                     model.FirstName!,
                     model.LastName!,
                     model.EmailAdress!,
                     model.PhoneNumber,
                     model.DriverLicenceNumber
+                    
                     );
                 _context.Drivers.Add(driver);
                 await _context.SaveChangesAsync();
@@ -90,5 +93,7 @@ namespace TP1.Controllers
                 return RedirectToAction(nameof(List));
             }
         }
+
+       
     }
 }

@@ -8,7 +8,8 @@ using TP1.Models.Branches;
 
 namespace TP1.Controllers;
 
-[Authorize]
+[Authorize(Roles = Roles.ADMIN)]
+
 
 public class BranchController(ApplicationDbContext context) : Controller
 {

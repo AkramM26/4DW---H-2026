@@ -9,7 +9,8 @@ using TP1.Models.Cars;
 
 namespace TP1.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = Roles.MANAGER + "," + Roles.ADMIN)]
+
 
     public class CarController(ApplicationDbContext context) : Controller
     {
@@ -23,8 +24,6 @@ namespace TP1.Controllers
 
 
         [HttpGet]
-        [Authorize(Roles = Roles.MANAGER)]
-        [Authorize(Roles = Roles.ADMIN)]
 
         public IActionResult Create(Guid branchId)
         {
@@ -32,7 +31,6 @@ namespace TP1.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = Roles.MANAGER)]
         public async Task<IActionResult> Create(CarCreate model, Guid branchId)
         {
 
@@ -135,7 +133,7 @@ namespace TP1.Controllers
             {
                 return View(model);
             }
-
+            
             var car = await Context.Cars.FindAsync(model.Id);
             if (car is null)
             {

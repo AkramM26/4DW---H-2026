@@ -1,6 +1,7 @@
 ﻿using LocationManagerCore.Domains;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using TP1.Models.Cars;
 
 namespace TP1.Models.Drivers
 {
@@ -37,11 +38,29 @@ namespace TP1.Models.Drivers
         [Display(Name = "Numéro de permis")]
         public string DriverLicenceNumber { get; set; }
 
+        [NotMapped]
         public Guid AddressId { get; set; }
         [ForeignKey("AddressId")]
         public virtual Address? Address { get; set; }
 
         // Propriété de navigation pour les locations
         public virtual ICollection<Location>? Locations { get; set; }
+    }
+
+    public class DriverCreateFactory()
+    {
+        public static DriverCreate Create(Guid AddressId)
+        {
+            return new DriverCreate()
+            {
+                AddressId = AddressId,
+                FirstName= string.Empty,
+                LastName= string.Empty,
+                EmailAdress= string.Empty,  
+                PhoneNumber= string.Empty,
+                DriverLicenceNumber= string.Empty,
+                Locations= new List<Location>() { }
+            };
+        }
     }
 }

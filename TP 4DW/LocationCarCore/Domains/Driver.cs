@@ -15,7 +15,22 @@ namespace LocationManagerCore.Domains
         public Address? Address { get; set; }
         public ICollection<Location>? Locations { get; set; }
 
-        public static Driver Create(string FirstName, string LastName, string EmailAdress, string driverLicenceNumber, string phoneNumber)
+        public static Driver Create(string FirstName, string LastName, string EmailAdress, string driverLicenceNumber, string phoneNumber, Guid addressId)
+        {
+            return new Driver
+            {
+                Id = Guid.NewGuid(),
+                FirstName = FirstName,
+                LastName = LastName,
+                EmailAdress = EmailAdress,
+                DriverLicenceNumber = driverLicenceNumber,
+                PhoneNumber = phoneNumber,
+                AddressId = addressId
+
+            };
+        }
+
+        public static Driver CreateWA(string FirstName, string LastName, string EmailAdress, string driverLicenceNumber, string phoneNumber)
         {
             return new Driver
             {
@@ -25,6 +40,7 @@ namespace LocationManagerCore.Domains
                 EmailAdress = EmailAdress,
                 DriverLicenceNumber = driverLicenceNumber,
                 PhoneNumber = phoneNumber
+
             };
         }
     }
