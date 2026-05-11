@@ -1,8 +1,4 @@
-﻿using LocationManagerCore.Domains;
-using Microsoft.CodeAnalysis.Operations;
-using Mono.TextTemplating;
-using System.ComponentModel.DataAnnotations;
-using System.Drawing;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace TP1.Models.Cars
 {
@@ -43,6 +39,7 @@ namespace TP1.Models.Cars
         [Range(2000, 2027, ErrorMessage = "L'année doit être entre 2000 et 2027.")]
         public required int Year { get; set; }
 
+        [Required(ErrorMessage = "La couleur est obligatoire.")]
         [StringLength(20, MinimumLength = 3)]
         [RegularExpression(@"^[a-zA-ZÀ-ÿ]*$", ErrorMessage = "La couleur ne doit contenir que des lettres, sans espace.")]
         public required string Color { get; set; }
