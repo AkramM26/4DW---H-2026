@@ -45,8 +45,9 @@
                         <tr>
                             <th class="ps-4 py-3">Statut</th>
                             <th>Nom de la succursale</th>
-                            <th class="text-center">Véhicules Actifs</th>
-                            <th class="text-center">Désactivés</th>
+                            <th class="text-center">Total</th>
+                            <th class="text-center">Actifs</th>
+                            <th class="text-center">Disponibles</th>
                             <th class="text-end pe-4">Actions de gestion</th>
                         </tr>
                     </thead>
@@ -73,13 +74,18 @@
                                     <small class="text-muted"><i class="bi bi-geo-alt me-1"></i> Point de service officiel</small>
                                 </td>
                                 <td class="text-center">
-                                    <span class="badge bg-success-subtle text-success border border-success px-3 py-2 fs-6 fw-normal" style="min-width: 60px;">
-                                        @item.ActiveCarsCount <i class="bi bi-car-front-fill ms-1"></i>
+                                    <span class="badge bg-secondary-subtle text-secondary border px-3 py-2 fs-6 fw-normal" style="min-width: 60px;">
+                                        @item.TotalCarsCount <i class="bi bi-car-front ms-1"></i>
                                     </span>
                                 </td>
                                 <td class="text-center">
-                                    <span class="badge bg-warning-subtle text-warning-emphasis border border-warning px-3 py-2 fs-6 fw-normal" style="min-width: 60px;">
-                                        @item.DisabledCarsCount <i class="bi bi-tools ms-1"></i>
+                                    <span class="badge bg-success-subtle text-success border border-success px-3 py-2 fs-6 fw-normal" style="min-width: 60px;">
+                                        @item.ActiveCarsCount <i class="bi bi-check-circle ms-1"></i>
+                                    </span>
+                                </td>
+                                <td class="text-center">
+                                    <span class="badge bg-primary-subtle text-primary border border-primary px-3 py-2 fs-6 fw-normal" style="min-width: 60px;">
+                                        @item.AvailableCarsCount <i class="bi bi-key ms-1"></i>
                                     </span>
                                 </td>
                                 <td class="text-end pe-4">

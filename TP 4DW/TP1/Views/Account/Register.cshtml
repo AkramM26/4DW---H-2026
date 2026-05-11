@@ -36,18 +36,17 @@
                             <span asp-validation-for="EmailAddress" class="text-danger"></span>
                         </div>
 
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label asp-for="Password" class="form-label"></label>
-                                <input asp-for="Password" type="password" class="form-control" placeholder="Mot de passe" />
-                                <span asp-validation-for="Password" class="text-danger"></span>
+                        <div class="mb-3">
+                            <label class="form-label">Mot de passe</label>
+                            <div class="input-group">
+                                <input asp-for="Password" type="text" class="form-control" id="passwordInput" placeholder="Mot de passe" />
+                                <input asp-for="ConfirmPassword" type="hidden" id="confirmPasswordInput" />
+                                <button type="button" class="btn btn-outline-secondary" onclick="generatePassword()">
+                                    <i class="bi bi-shuffle me-1"></i> Générer
+                                </button>
                             </div>
-
-                            <div class="col-md-6 mb-3">
-                                <label asp-for="ConfirmPassword" class="form-label"></label>
-                                <input asp-for="ConfirmPassword" type="password" class="form-control" placeholder="Confirmer" />
-                                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-                            </div>
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
@@ -69,7 +68,7 @@
                                 {
                                     foreach (var branch in ViewBag.Branches)
                                     {
-                                        <option value="@branch.Id">@branch.Name</option>
+                                        <option value="@branch.BranchId">@branch.Name</option>
                                     }
                                 }
                             </select>
@@ -99,6 +98,29 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
     <script>
+        function generatePassword() {
+            const upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            const lower = 'abcdefghijklmnopqrstuvwxyz';
+            const digits = '0123456789';
+            const special = '!@@#$%';
+            const all = upper + lower + digits + special;
+
+            let pwd = [
+                upper[Math.floor(Math.random() * upper.length)],
+                lower[Math.floor(Math.random() * lower.length)],
+                digits[Math.floor(Math.random() * digits.length)],
+                special[Math.floor(Math.random() * special.length)]
+            ];
+            for (let i = 4; i < 10; i++)
+                pwd.push(all[Math.floor(Math.random() * all.length)]);
+
+            // Mélanger
+            pwd = pwd.sort(() => Math.random() - 0.5).join('');
+
+            document.getElementById('passwordInput').value = pwd;
+            document.getElementById('confirmPasswordInput').value = pwd;
+        }
+
         function toggleBranch() {
             var role = document.getElementById('roleSelect').value;
             var branchDiv = document.getElementById('branchDiv');

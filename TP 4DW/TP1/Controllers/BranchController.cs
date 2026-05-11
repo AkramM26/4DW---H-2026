@@ -32,8 +32,9 @@ public class BranchController(ApplicationDbContext context) : Controller
                 BranchId = b.BranchId,
                 Name = b.Name,
                 Status = b.Status,
+                TotalCarsCount = b.Cars.Count(c => c.Status != "Archivé"),
                 ActiveCarsCount = b.Cars.Count(c => c.Status == "Actif"),
-                DisabledCarsCount = b.Cars.Count(c => c.Status == "Désactivé")
+                AvailableCarsCount = b.Cars.Count(c => c.Availability)
             })
             .ToListAsync();
 

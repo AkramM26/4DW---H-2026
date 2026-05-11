@@ -5,6 +5,20 @@
 }
 
 <div class="container mt-4">
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show shadow-sm border-0 mb-4" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i> @TempData["Message"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+    @if (TempData["Erreur"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show shadow-sm border-0 mb-4" role="alert">
+            <i class="bi bi-exclamation-octagon-fill me-2"></i> @TempData["Erreur"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h2 class="fw-bold mb-0 text-dark">
@@ -23,35 +37,49 @@
                 <table class="table table-hover align-middle mb-0">
                     <thead class="table-light text-secondary">
                         <tr>
-                            <th class="ps-4">@Html.DisplayNameFor(model => model.UserName)</th>
-                            <th>@Html.DisplayNameFor(model => model.EmailAddress)</th>
+                            <th class="ps-4">Identifiant unique</th>
+                            <th>Nom d'utilisateur</th>
+                            <th>Courriel</th>
                             <th class="text-center px-4">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
+                        @if (TempData["NewPassword"] != null)
+                        {
+                            <tr class="table-success">
+                                <td colspan="4" class="ps-4 fw-bold text-success">
+                                    <i class="bi bi-key-fill me-2"></i> @TempData["NewPassword"]
+                                </td>
+                            </tr>
+                        }
                         @foreach (var item in Model)
                         {
                             <tr>
-                                <td class="ps-4 fw-bold text-primary">
-                                    @item.UserName
+                                <td class="ps-4">
+                                    <small class="text-muted font-monospace">@item.Id</small>
                                 </td>
-                                <td>
-                                    <span class="text-muted">@item.Email</span>
-                                </td>
+                                <td class="fw-bold text-primary">@item.UserName</td>
+                                <td><span class="text-muted">@item.Email</span></td>
                                 <td class="text-center px-4">
                                     <div class="d-flex justify-content-center gap-2">
-                                        <a asp-action="Details"
-                                           asp-route-name="@item.UserName"
-                                           class="btn btn-sm btn-info text-white shadow-sm d-flex align-items-center justify-content-center"
-                                           style="min-width: 75px;">
-                                            <i class="bi bi-eye me-1"></i> Voir
-                                        </a>
-                                        <a asp-action="Delete"
-                                           asp-route-name="@item.UserName"
-                                           class="btn btn-sm btn-danger shadow-sm d-flex align-items-center justify-content-center"
-                                           style="min-width: 75px;">
-                                            <i class="bi bi-trash me-1"></i> Supprimer
-                                        </a>
+                                        <form asp-action="ResetPassword" method="post" style="display:inline;">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="name" value="@item.UserName" />
+                                            <button type="submit" class="btn btn-sm btn-warning shadow-sm"
+                                                    onclick="return confirm('Réinitialiser le mot de passe de @item.UserName ?');"
+                                                    style="min-width: 75px;">
+                                                <i class="bi bi-key me-1"></i> Réinit.
+                                            </button>
+                                        </form>
+                                        <form asp-action="Delete" method="post" style="display:inline;">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="name" value="@item.UserName" />
+                                            <button type="submit" class="btn btn-sm btn-danger shadow-sm"
+                                                    onclick="return confirm('Supprimer @item.UserName ? Cette action est irréversible.');"
+                                                    style="min-width: 75px;">
+                                                <i class="bi bi-trash me-1"></i> Supprimer
+                                            </button>
+                                        </form>
                                     </div>
                                 </td>
                             </tr>
