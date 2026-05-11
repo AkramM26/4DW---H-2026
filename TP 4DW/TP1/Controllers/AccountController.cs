@@ -40,13 +40,19 @@ namespace TP1.Controllers
         [Authorize(Roles = Roles.ADMIN)]
         public async Task<IActionResult> Register(AccountRegistration vm)
         {
-            if (!ModelState.IsValid)
+            // BranchId obligatoire pour Gérant et Commis
+            if ((vm.Role == Roles.MANAGER || vm.Role == Roles.CLERK) && vm.BranchId == null)
             {
-                return View(vm);
+                ModelState.AddModelError(nameof(vm.BranchId), "Une succursale doit être associée pour ce rôle.");
             }
 
-            //if (vm.FullName == "Michel Tremblay")
-            //    ModelState.AddModelError("", "Non! t'es banni");
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Branches = await context.Branches
+                    .Where(b => b.Status)
+                    .ToListAsync();
+                return View(vm);
+            }
 
             // Créer l'entité utilisateur
             var newUser = AppUser.Create(
@@ -55,10 +61,11 @@ namespace TP1.Controllers
                     vm.EmailAddress!
                 );
 
-            //// Ajouter l'utilisate
-            //// ur au contexte via le service d'identité
-            var result = await UserManager.CreateAsync(newUser, vm.Password);
+            // Associer la succursale si applicable
+            if (vm.BranchId.HasValue)
+                newUser.BranchId = vm.BranchId;
 
+            var result = await UserManager.CreateAsync(newUser, vm.Password);
 
             if (!result.Succeeded)
             {
@@ -66,22 +73,16 @@ namespace TP1.Controllers
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
+                ViewBag.Branches = await context.Branches
+                    .Where(b => b.Status)
+                    .ToListAsync();
                 return View(vm);
             }
 
-            // Assignation du rôle 
+            // Assignation du rôle
             await userManager.AddToRoleAsync(newUser, vm.Role);
 
-            //Rediriger vers la page de connextion OU page d'accueil
-            //var signInResult = await signInManager.PasswordSignInAsync(
-            //    newUser, vm.Password!,
-            //    isPersistent: false, //Rememberme?
-            //    lockoutOnFailure: false);
-
-            //if (!signInResult.Succeeded)
-            //    ModelState.AddModelError(string.Empty, " Une erreur est survenue lors de votre connexion");
-
-            return RedirectToAction(nameof(HomeController.Index), "Home");
+            return RedirectToAction(nameof(RegisteredList));
         }
 
         // GET : /Account/Login(returnUrl)

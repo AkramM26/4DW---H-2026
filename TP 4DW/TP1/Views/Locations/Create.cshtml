@@ -35,20 +35,21 @@
 
                                 <div class="mb-3">
                                     <label asp-for="Opening" class="form-label"></label>
-                                    <input asp-for="Opening" class="form-control" />
+                                    <div class="input-group">
+                                        <input asp-for="Opening" type="datetime-local" class="form-control"
+                                               id="openingInput" />
+                                        <button type="button" class="btn btn-outline-secondary"
+                                                onclick="document.getElementById('openingInput').value = new Date(new Date().getTime() - new Date().getTimezoneOffset()*60000).toISOString().slice(0,16)">
+                                            <i class="bi bi-clock me-1"></i>Maintenant
+                                        </button>
+                                    </div>
                                     <span asp-validation-for="Opening" class="text-danger"></span>
                                 </div>
 
                                 <div class="mb-3">
                                     <label asp-for="PlanedClosing" class="form-label"></label>
-                                    <input asp-for="PlanedClosing" class="form-control" />
+                                    <input asp-for="PlanedClosing" type="datetime-local" class="form-control" />
                                     <span asp-validation-for="PlanedClosing" class="text-danger"></span>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label asp-for="OfficialClosing" class="form-label"></label>
-                                    <input asp-for="OfficialClosing" class="form-control" />
-                                    <span asp-validation-for="OfficialClosing" class="text-danger"></span>
                                 </div>
                             </div>
 

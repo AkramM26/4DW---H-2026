@@ -40,26 +40,11 @@ namespace TP1.Models.Account
         public string? ConfirmPassword { get; set; }
 
         [Required]
-        [DisplayName("Role")]
+        [DisplayName("Rôle")]
         public string? Role { get; set; }
 
-        //[Display(Name = "Succursale associée")]
-        //public Guid BranchId { get; set; }
-
-
-        //[Required]
-        //[DisplayName("Agree To Terms and Conditions")]
-        //public bool AgreeToTerms { get; set; } = false;
-
-
-        //// Lien avec la succursale
-        //public int? BranchId { get; set; }
-
-        ////[Required]
-        //[DisplayName("Branch")]
-        //public virtual Branch Branch { get; set; }
-
-        // Dropdown avec toutes les succursales pour lui permettre d'en choisir une 
-        // Dropdown avec la liste les rôles pour lui permettre d'en choisir un
+        [Display(Name = "Succursale associée")]
+        public Guid? BranchId { get; set; }
+        // Obligatoire pour Gérant et Commis / validé dans le controller
     }
 }

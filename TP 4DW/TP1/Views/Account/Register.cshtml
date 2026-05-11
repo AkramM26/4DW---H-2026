@@ -50,14 +50,30 @@
                             </div>
                         </div>
 
-                        <div class="mb-4">
+                        <div class="mb-3">
                             <label asp-for="Role" class="form-label"></label>
-                            <select asp-for="Role" class="form-select shadow-sm">
+                            <select asp-for="Role" class="form-select shadow-sm" id="roleSelect"
+                                    onchange="toggleBranch()">
                                 <option value="@TP1.Constantes.Roles.ADMIN">Administrateur</option>
                                 <option value="@TP1.Constantes.Roles.MANAGER">Gérant</option>
                                 <option value="@TP1.Constantes.Roles.CLERK">Commis</option>
                                 <option value="@TP1.Constantes.Roles.USER">Utilisateur</option>
                             </select>
+                        </div>
+
+                        <div class="mb-4" id="branchDiv" style="display:none;">
+                            <label asp-for="BranchId" class="form-label">Succursale associée <span class="text-danger">*</span></label>
+                            <select asp-for="BranchId" class="form-select shadow-sm">
+                                <option value="">-- Sélectionner une succursale --</option>
+                                @if (ViewBag.Branches != null)
+                                {
+                                    foreach (var branch in ViewBag.Branches)
+                                    {
+                                        <option value="@branch.Id">@branch.Name</option>
+                                    }
+                                }
+                            </select>
+                            <span asp-validation-for="BranchId" class="text-danger"></span>
                         </div>
 
                         <div class="d-grid">
@@ -82,4 +98,17 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script>
+        function toggleBranch() {
+            var role = document.getElementById('roleSelect').value;
+            var branchDiv = document.getElementById('branchDiv');
+            if (role === '@TP1.Constantes.Roles.MANAGER' || role === '@TP1.Constantes.Roles.CLERK') {
+                branchDiv.style.display = '';
+            } else {
+                branchDiv.style.display = 'none';
+            }
+        }
+        // Run on page load to handle model re-display after validation error
+        toggleBranch();
+    </script>
 }

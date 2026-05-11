@@ -15,6 +15,8 @@ namespace LocationManagerCore.Domains
         private AppUser() : base() { }
         public required string FullName { get; set; }
 
+        public Guid? BranchId { get; set; }
+
         [NotMapped]
         public string LastName { get; set; }
 
@@ -22,11 +24,9 @@ namespace LocationManagerCore.Domains
         public string FirstName { get; set; }
 
         [NotMapped]
-
         public string? EmailAddress { get; init; }
 
         [NotMapped]
-
         public string Role { get; set; }
 
         private AppUser(string username) : base (username) { }

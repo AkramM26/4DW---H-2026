@@ -180,36 +180,69 @@ namespace TP1.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> Delete(LocationDelete model)
+        public async Task<IActionResult> Close(Guid id)
         {
+            var location = await Context.Locations
+                .Include(l => l.Car)
+                .Include(l => l.Driver)
+                .FirstOrDefaultAsync(l => l.Id == id);
+
+            if (location == null)
+                return RedirectToAction(nameof(Index), new { erreur = "Location introuvable." });
+
+            if (location.OfficialClosing != null)
+                return RedirectToAction(nameof(Details), new { id });
+
+            var model = new LocationDelete
+            {
+                LocationId = location.Id,
+                Opening = location.Opening,
+                OfficialClosing = DateTime.Now
+            };
+
+            ViewBag.CarNickname = location.Car?.Nickname;
+            ViewBag.DriverName = $"{location.Driver?.FirstName} {location.Driver?.LastName}";
             return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete(LocationDelete model, Guid? id, Guid BranchId)
+        public async Task<IActionResult> Close(Guid id, LocationDelete model)
         {
-            var car = await Context.Cars.FindAsync(id);
-            var location = Context.Locations.Where(l => l.CarId == id).FirstOrDefault();
+            var location = await Context.Locations
+                .Include(l => l.Car)
+                .Include(l => l.Notes)
+                .FirstOrDefaultAsync(l => l.Id == id);
 
-            if (location == null) 
-                return NotFound();  
+            if (location == null)
+                return RedirectToAction(nameof(Index), new { erreur = "Location introuvable." });
 
-            location.OfficialClosing= model.OfficialClosing;
-            car.Availability = true;
-            var note = Note.Create(model.Note);
-            Context.SaveChangesAsync();
+            // Validation : fermeture ne peut pas être avant l'ouverture
+            if (model.OfficialClosing <= location.Opening)
+            {
+                ModelState.AddModelError(nameof(model.OfficialClosing),
+                    "La date de fermeture doit être après la date d'ouverture " +
+                    $"({location.Opening:dd MMM yyyy HH:mm}).");
+                ViewBag.CarNickname = location.Car?.Nickname;
+                model.Opening = location.Opening;
+                model.LocationId = location.Id;
+                return View(model);
+            }
 
+            location.OfficialClosing = model.OfficialClosing;
+            location.Status = false;
+            location.Car.Availability = true;
 
-            location.Notes.Add(note);
+            if (!string.IsNullOrWhiteSpace(model.Note))
+            {
+                var note = Note.Create(model.Note);
+                note.LocationId = location.Id;
+                Context.Notes.Add(note);
+            }
 
-            Context.SaveChangesAsync();
+            await Context.SaveChangesAsync();
 
-
-            TempData["SuccessMessage"] = "La location a été fermée avec succès ";
-
-            return RedirectToAction("List", "Car", new { branchId = BranchId });
-
-
+            TempData["SuccessMessage"] = "La location a été fermée avec succès.";
+            return RedirectToAction(nameof(Details), new { id = location.Id });
         }
 
 
