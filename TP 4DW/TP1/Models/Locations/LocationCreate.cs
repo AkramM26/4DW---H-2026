@@ -111,6 +111,10 @@ namespace TP1.Models.Locations
 
         //BrandID
         public Guid BranchId { get; set; }
+
+        [StringLength(500, ErrorMessage = "La note ne peut pas dépasser 500 caractères.")]
+        [Display(Name = "Note initiale (optionnel)")]
+        public string? InitialNote { get; set; }
     }
 
 

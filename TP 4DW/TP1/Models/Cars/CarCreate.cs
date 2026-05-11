@@ -52,6 +52,10 @@ namespace TP1.Models.Cars
         public required decimal EstimatedValue { get; set; }
 
         public Guid BranchId { get; set; }
+
+        [StringLength(500, ErrorMessage = "La note ne peut pas dépasser 500 caractères.")]
+        [Display(Name = "Note initiale (optionnel)")]
+        public string? InitialNote { get; set; }
     }
 
     public class CarCreateFactory()

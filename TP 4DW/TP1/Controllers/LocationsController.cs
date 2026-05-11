@@ -77,13 +77,18 @@ namespace TP1.Controllers
             Context.Locations.Add(location);
 
 
-            //Mise à jour de la disponibilté de la voiture
+            //Mise à jour de la disponibilité de la voiture
             var car = await Context.Cars.FindAsync(model.CarId);
             car.Availability = false;
 
-            //Affectations
-            //model.CarId= CarId;
             model.DriverId = driver.Id;
+
+            if (!string.IsNullOrWhiteSpace(model.InitialNote))
+            {
+                var note = Note.Create(model.InitialNote);
+                note.LocationId = location.Id;
+                Context.Notes.Add(note);
+            }
 
             await Context.SaveChangesAsync();
 

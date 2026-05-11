@@ -54,6 +54,13 @@ namespace TP1.Controllers
                 model.BranchId
                 );
             Context.Cars.Add(car);
+
+            if (!string.IsNullOrWhiteSpace(model.InitialNote))
+            {
+                var note = Note.CreateForCar(model.InitialNote, car.Id);
+                Context.Notes.Add(note);
+            }
+
             await Context.SaveChangesAsync();
             return RedirectToAction(nameof(List), new { branchId = branchId });
         }

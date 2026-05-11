@@ -89,6 +89,15 @@
 
                         <hr class="my-4" />
 
+                        <div class="mb-3">
+                            <label asp-for="InitialNote" class="form-label text-secondary">
+                                <i class="bi bi-sticky me-1"></i> Note initiale <span class="text-muted fw-normal">(optionnel)</span>
+                            </label>
+                            <textarea asp-for="InitialNote" class="form-control" rows="3"
+                                      placeholder="État du véhicule, observations à la création..."></textarea>
+                            <span asp-validation-for="InitialNote" class="text-danger"></span>
+                        </div>
+
                         <div class="d-flex justify-content-between">
                             <a asp-action="List" asp-route-branchId="@Model.BranchId" class="btn btn-outline-secondary">
                                 <i class="bi bi-arrow-left"></i> Annuler
