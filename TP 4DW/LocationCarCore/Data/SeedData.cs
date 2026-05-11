@@ -10,7 +10,7 @@ public static class SeedData
 
     public static async Task InitializeAsync(ApplicationDbContext context)
     {
-        await context.Database.EnsureCreatedAsync();
+        await context.Database.MigrateAsync();
 
         if (await context.Branches.AnyAsync())
         {

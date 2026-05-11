@@ -123,6 +123,7 @@ namespace TP1.Controllers
                 .Include(l => l.Car)
                 .Include(l => l.Driver)
                     .ThenInclude(d => d.Address)
+                .Include(l => l.Notes)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (location == null)
@@ -131,6 +132,50 @@ namespace TP1.Controllers
             }
 
             return View(location);
+        }
+
+        // Ajouter une note à une location
+        [HttpGet]
+        public async Task<IActionResult> AddNote(Guid id)
+        {
+            var location = await Context.Locations
+                .Include(l => l.Car)
+                .FirstOrDefaultAsync(l => l.Id == id);
+
+            if (location == null)
+                return RedirectToAction(nameof(Index), new { erreur = "Location introuvable." });
+
+            ViewBag.LocationId = id;
+            ViewBag.CarNickname = location.Car?.Nickname;
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddNote(Guid id, string content)
+        {
+            var location = await Context.Locations
+                .Include(l => l.Notes)
+                .Include(l => l.Car)
+                .FirstOrDefaultAsync(l => l.Id == id);
+
+            if (location == null)
+                return RedirectToAction(nameof(Index), new { erreur = "Location introuvable." });
+
+            if (string.IsNullOrWhiteSpace(content))
+            {
+                ViewBag.LocationId = id;
+                ViewBag.CarNickname = location.Car?.Nickname;
+                ModelState.AddModelError("content", "Le contenu de la note est obligatoire.");
+                return View();
+            }
+
+            var note = Note.Create(content);
+            note.LocationId = id;
+            Context.Notes.Add(note);
+            await Context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "Note ajoutée avec succès.";
+            return RedirectToAction(nameof(Details), new { id });
         }
 
 

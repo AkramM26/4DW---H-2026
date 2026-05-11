@@ -58,9 +58,9 @@
         </div>
 
         <div class="col-md-7">
-            <div class="card shadow-sm">
+            <div class="card shadow-sm mb-4">
                 <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0">Historique des locataires & Notes</h5>
+                    <h5 class="mb-0">Historique des locataires</h5>
                 </div>
                 <div class="card-body">
                     @if (Model.Locations != null && Model.Locations.Any())
@@ -72,6 +72,7 @@
                                         <th>Date début</th>
                                         <th>Conducteur</th>
                                         <th>Statut</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -94,7 +95,6 @@
                                                     <span class="text-muted">Terminée (@duree jours)</span>
                                                 }
                                             </td>
-
                                             <td>
                                                 <a asp-controller="Locations" asp-action="Details" asp-route-id="@loc.Id" class="btn btn-sm btn-outline-primary">
                                                     <i class="bi bi-eye"></i>
@@ -112,6 +112,45 @@
                     }
                 </div>
             </div>
+        </div>
+    </div>
+
+    @* Section Notes *@
+    <div class="card shadow-sm border-0 mt-2">
+        <div class="card-header bg-warning text-dark d-flex justify-content-between align-items-center py-3">
+            <h5 class="mb-0"><i class="bi bi-sticky-fill me-2"></i>Notes du véhicule</h5>
+            <a asp-action="AddNote" asp-route-id="@Model.Id" class="btn btn-dark btn-sm">
+                <i class="bi bi-plus-lg me-1"></i> Ajouter une note
+            </a>
+        </div>
+        <div class="card-body">
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="bi bi-check-circle-fill me-1"></i> @TempData["SuccessMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+            @if (Model.Notes != null && Model.Notes.Any())
+            {
+                <ul class="list-group list-group-flush">
+                    @foreach (var note in Model.Notes.OrderByDescending(n => n.CreatedAt))
+                    {
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <div>
+                                <p class="mb-1">@note.Content</p>
+                                <small class="text-muted"><i class="bi bi-clock me-1"></i>@note.CreatedAt.ToString("dd MMM yyyy HH:mm")</small>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <div class="alert alert-light border mb-0">
+                    <i class="bi bi-info-circle me-1"></i> Aucune note pour ce véhicule.
+                </div>
+            }
         </div>
     </div>
 </div>

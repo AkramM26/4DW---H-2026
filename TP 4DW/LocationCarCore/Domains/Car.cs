@@ -29,6 +29,7 @@ namespace LocationManageCore.Domains
         public Guid BranchId { get; set; }
         public virtual Branch Branch { get; set; }
         public virtual ICollection<Location> Locations { get; set; } = new List<Location>();
+        public virtual ICollection<Note> Notes { get; set; } = new List<Note>();
 
         public static Car Create(
             string carbrand,
@@ -54,7 +55,8 @@ namespace LocationManageCore.Domains
                 Mileage = mileage,
                 Nickname = nickname,
                 EstimatedValue = estimatedvalue,
-                BranchId = branchid
+                BranchId = branchid,
+                Availability = true
             };
         }
     }

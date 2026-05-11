@@ -1,5 +1,6 @@
 ﻿using LocationManageCore.Data;
 using LocationManageCore.Domains;
+using LocationManagerCore.Domains;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -161,18 +162,57 @@ namespace TP1.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = Roles.CLERK + "," + Roles.MANAGER + "," + Roles.ADMIN)]
         public async Task<IActionResult> Details(Guid id)
         {
             var car = await Context.Cars
                 .Include(c => c.Locations)
                     .ThenInclude(l => l.Driver)
+                .Include(c => c.Notes)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (car is null)
             {
-                return NotFound();
+                TempData["Error"] = "Le système ne parvient pas à afficher le profil de la voiture.";
+                return RedirectToAction(nameof(ListAll));
             }
             return View(car);
+        }
+
+        // Ajouter une note à une voiture
+        [HttpGet]
+        [Authorize(Roles = Roles.CLERK + "," + Roles.MANAGER + "," + Roles.ADMIN)]
+        public async Task<IActionResult> AddNote(Guid id)
+        {
+            var car = await Context.Cars.FindAsync(id);
+            if (car is null) return NotFound();
+
+            ViewBag.CarId = id;
+            ViewBag.CarNickname = car.Nickname;
+            return View();
+        }
+
+        [HttpPost]
+        [Authorize(Roles = Roles.CLERK + "," + Roles.MANAGER + "," + Roles.ADMIN)]
+        public async Task<IActionResult> AddNote(Guid id, string content)
+        {
+            var car = await Context.Cars.Include(c => c.Notes).FirstOrDefaultAsync(c => c.Id == id);
+            if (car is null) return NotFound();
+
+            if (string.IsNullOrWhiteSpace(content))
+            {
+                ViewBag.CarId = id;
+                ViewBag.CarNickname = car.Nickname;
+                ModelState.AddModelError("content", "Le contenu de la note est obligatoire.");
+                return View();
+            }
+
+            var note = Note.CreateForCar(content, id);
+            Context.Notes.Add(note);
+            await Context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "Note ajoutée avec succès.";
+            return RedirectToAction(nameof(Details), new { id });
         }
 
         [HttpPost]
