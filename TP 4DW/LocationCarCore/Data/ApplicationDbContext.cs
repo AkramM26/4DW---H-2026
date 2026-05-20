@@ -16,9 +16,6 @@ namespace LocationManageCore.Data
         public DbSet<Location> Locations { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Note> Notes { get; set; }
-
-
-
     }
 }
 //}

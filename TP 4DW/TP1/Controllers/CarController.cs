@@ -40,24 +40,29 @@ namespace TP1.Controllers
                 return View(model);
             }
 
+            if (model.Year < 2000 || model.Year > DateTime.Now.Year + 1)
+            {
+                ModelState.AddModelError(nameof(model.Year), "L'année doit être entre 2000 et 2027.");
+                return View(model);
+            }
 
             var car = Car.Create(
-                model.CarBrand!,
-                model.CarModel!,
-                model.Year,
-                model.Color!,
-                model.SerialNumber!,
-                model.Registration!,
-                model.Mileage!,
+                model.CarBrand!.Trim(),
+                model.CarModel!.Trim(),
+                model.Year!.Value,
+                model.Color!.Trim(),
+                model.SerialNumber!.ToUpper(),
+                model.Registration!.ToUpper(),
+                model.Mileage!.Value,
                 model.Nickname!,
-                model.EstimatedValue!,
+                model.EstimatedValue!.Value,
                 model.BranchId
                 );
             Context.Cars.Add(car);
 
             if (!string.IsNullOrWhiteSpace(model.InitialNote))
             {
-                var note = Note.CreateForCar(model.InitialNote, car.Id);
+                var note = Note.CreateForCar(model.InitialNote.Trim(), car.Id);
                 Context.Notes.Add(note);
             }
 
@@ -148,20 +153,24 @@ namespace TP1.Controllers
                 return NotFound();
             }
 
-            car.CarModel = model.CarModel!;
-            car.CarBrand = model.CarBrand!;
+            if (model.Year < 2000 || model.Year > DateTime.Now.Year + 1)
+            {
+                ModelState.AddModelError(nameof(model.Year), "L'année doit être entre 2000 et 2027.");
+                return View(model);
+            }
+
+            car.CarModel = model.CarModel!.Trim();
+            car.CarBrand = model.CarBrand!.Trim();
             car.Nickname = model.Nickname!;
             car.Status = model.Status!;
             car.Availability = model.Availability!;
             car.State = model.State!;
             car.SerialNumber = model.SerialNumber!;
             car.Registration = model.Registration!;
-            car.Year = model.Year!;
-            car.Color = model.Color!;
-            car.Mileage = model.Mileage!;
-            car.EstimatedValue = model.EstimatedValue!;
-
-
+            car.Year = model.Year!.Value;
+            car.Color = model.Color!.Trim();
+            car.Mileage = model.Mileage!.Value;
+            car.EstimatedValue = model.EstimatedValue!.Value;
 
             await Context.SaveChangesAsync();
 
@@ -214,7 +223,7 @@ namespace TP1.Controllers
                 return View();
             }
 
-            var note = Note.CreateForCar(content, id);
+            var note = Note.CreateForCar(content.Trim(), id);
             Context.Notes.Add(note);
             await Context.SaveChangesAsync();
 

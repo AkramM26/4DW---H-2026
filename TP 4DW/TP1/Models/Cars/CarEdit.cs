@@ -21,7 +21,7 @@ namespace TP1.Models.Cars
         public required bool State { get; set; }
 
         [Required(ErrorMessage = "Le NIV est obligatoire.")]
-        [RegularExpression(@"^[A-Z0-9]{17}$", ErrorMessage = "Le format du NIV est invalide.")]
+        [RegularExpression(@"^[A-Z0-9]{10}$", ErrorMessage = "Le format du NIV est invalide. Il doit contenir exactement 10 caractères alphanumériques.")]
         public required string SerialNumber { get; set; }
         [Required(ErrorMessage = "L'immatriculation est obligatoire.")]
         [RegularExpression(@"^[a-zA-Z0-9]{6,7}$", ErrorMessage = "6 à 7 caractères alphanumériques sans espace.")]
@@ -29,22 +29,23 @@ namespace TP1.Models.Cars
 
         [Required]
         [StringLength(20, MinimumLength = 3)]
-        [RegularExpression(@"^[a-zA-ZÀ-ÿ]*$", ErrorMessage = "Lettres seulement, sans espace.")]
+        [RegularExpression(@"^[a-zA-ZéèàçùûêëîïôöûüÂÊÎÔÛÄËÏÖÜÇ]{3,20}$", ErrorMessage = "La marque ne doit contenir que des lettres, sans espace.")]
         public required string CarBrand { get; set; }
 
         [Required]
         [StringLength(20, MinimumLength = 3)]
+        [RegularExpression(@"^[a-zA-ZéèàçùûêëîïôöûüÂÊÎÔÛÄËÏÖÜÇ]{3,20}$", ErrorMessage = "Le modèle ne doit contenir que des lettres, sans espace.")]
         public required string CarModel { get; set; }
 
         [Required]
-        [Range(2000, 2027, ErrorMessage = "L'année doit être entre 2000 et 2027.")]
         public required int? Year { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "La couleur est obligatoire.")]
         [StringLength(20, MinimumLength = 3)]
+        [RegularExpression(@"^[a-zA-ZéèàçùûêëîïôöûüÂÊÎÔÛÄËÏÖÜÇ]{3,20}$", ErrorMessage = "La couleur ne doit contenir que des lettres, sans espace.")]
         public required string Color { get; set; }
 
-        [Range(0, int.MaxValue)]
+        [Range(0, int.MaxValue, ErrorMessage = "Le kilométrage doit être un nombre positif.")]
         public required int? Mileage { get; set; }
 
         [Range(0, (double)decimal.MaxValue)]

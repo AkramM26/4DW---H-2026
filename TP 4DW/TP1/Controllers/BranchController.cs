@@ -53,6 +53,13 @@ public class BranchController(ApplicationDbContext context) : Controller
     {
         if (!ModelState.IsValid) return View(model);
 
+        bool nameExist = await Context.Branches.AnyAsync(b => b.Name == model.Name);
+        if (nameExist)
+        {
+            ModelState.AddModelError(nameof(model.Name), "Nom de succursale déjà utilisé");
+            return View(model);
+        }
+
         var branch = Branch.Create(model.Status, model.Name);
 
         Context.Branches.Add(branch);
@@ -84,6 +91,16 @@ public class BranchController(ApplicationDbContext context) : Controller
 
         var branch = await Context.Branches.FindAsync(model.Id);
         if (branch is null) return NotFound();
+
+        if (model.Name != branch.Name)
+        {
+            bool nameExist = await Context.Branches.AnyAsync(b => b.Name == model.Name);
+            if (nameExist)
+            {
+                ModelState.AddModelError(nameof(model.Name), "Nom de succursale déjà utilisé");
+                return View(model);
+            }
+        }
 
         branch.Status = model.Status;
         branch.Name = model.Name;

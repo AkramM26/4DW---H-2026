@@ -11,10 +11,12 @@ namespace TP1.Models.Account
 
         [Required]
         [DisplayName("User Name")]
+        [StringLength(254, ErrorMessage = "Nom d'utilisateur ou mot de passe invalide")]
         public string? Username { get; set; }
 
         [Required]
         [DisplayName("Password")]
+        [StringLength(128, ErrorMessage = "Nom d'utilisateur ou mot de passe invalide")]
         [DataType(DataType.Password)]
         public string? Password { get; set; }
 

@@ -12,8 +12,6 @@ using TP1.Models.Cars;
 namespace TP1.Controllers
 {
     [Authorize(Roles = Roles.ADMIN)]
-
-
     public class AccountController(
         UserManager<AppUser> userManager,
         SignInManager<AppUser> signInManager,
@@ -51,6 +49,20 @@ namespace TP1.Controllers
                 ViewBag.Branches = await context.Branches
                     .Where(b => b.Status)
                     .ToListAsync();
+                return View(vm);
+            }
+
+            bool courrielUsernameExiste = await Context.Users.AnyAsync(u => u.EmailAddress == vm.EmailAddress || u.UserName == vm.UserName);
+            if (courrielUsernameExiste)
+            {
+                ModelState.AddModelError(nameof(vm.EmailAddress), "Cette adresse courriel ou ce username est déjà associé à un compte.");
+                return View(vm);
+            }
+
+            bool roleExiste = await Context.Roles.AnyAsync(r => r.Name == vm.Role);
+            if (!roleExiste)
+            {
+                ModelState.AddModelError(nameof(vm.Role), "Ce rôle n'existe pas.");
                 return View(vm);
             }
 

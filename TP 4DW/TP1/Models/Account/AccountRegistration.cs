@@ -25,6 +25,8 @@ namespace TP1.Models.Account
         [Required]
         [DisplayName("Email Address")]
         [DataType(DataType.EmailAddress)]
+        [StringLength(254, ErrorMessage = "L'adresse courriel ne peut pas dépasser 254 caractères.")]
+        [RegularExpression(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", ErrorMessage = "Le courriel doit contenir un domaine valide (ex: .com, .ca).")]
         [EmailAddress(ErrorMessage = "Le format de l'adresse courriel n'est pas valide.")]
         public string? EmailAddress { get; set; }
 

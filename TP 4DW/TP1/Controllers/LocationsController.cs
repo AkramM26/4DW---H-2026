@@ -17,7 +17,6 @@ using TP1.Models.Locations;
 namespace TP1.Controllers
 {
     [Authorize(Roles = Roles.MANAGER + "," + Roles.ADMIN + "," + Roles.CLERK)]
-
     public class LocationsController(ApplicationDbContext context) : Controller
     {
         private readonly ApplicationDbContext Context = context;
@@ -37,6 +36,23 @@ namespace TP1.Controllers
 
             //RedirectToAction("CreateInLocation", "Addresses", new { branchId = BranchId });
 
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            if (model.PlanedClosing <= model.Opening)
+            {
+                ModelState.AddModelError(nameof(model.PlanedClosing),
+                    "La date de fermeture prévue doit être ultérieure à la date d'ouverture.");
+            }
+
+            if (model.OfficialClosing.HasValue && model.OfficialClosing.Value <= model.Opening)
+            {
+                ModelState.AddModelError(nameof(model.OfficialClosing),
+                    "La date de fermeture officielle ne peut pas être antérieure ou égale à la date d'ouverture.");
+            }
 
             if (!ModelState.IsValid)
             {
@@ -85,7 +101,7 @@ namespace TP1.Controllers
 
             if (!string.IsNullOrWhiteSpace(model.InitialNote))
             {
-                var note = Note.Create(model.InitialNote);
+                var note = Note.Create(model.InitialNote.Trim());
                 note.LocationId = location.Id;
                 Context.Notes.Add(note);
             }

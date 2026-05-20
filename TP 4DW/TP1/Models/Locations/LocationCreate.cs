@@ -20,16 +20,19 @@ namespace TP1.Models.Locations
 
         [Required(ErrorMessage = "La date d'ouverture est obligatoire.")]
         [Display(Name = "Date d'ouverture")]
+        [Range(typeof(DateTime), "2000-01-01", "2050-12-31", ErrorMessage = "La date doit être comprise entre l'an 2000 et 2050.")]
         [DataType(DataType.DateTime)]
         public DateTime Opening { get; set; }
 
         [Required(ErrorMessage = "La date de fermeture prévue est obligatoire.")]
         [Display(Name = "Fermeture prévue")]
+        [Range(typeof(DateTime), "2000-01-01", "2050-12-31", ErrorMessage = "La date doit être comprise entre l'an 2000 et 2050.")]
         [DataType(DataType.DateTime)]
         public DateTime PlanedClosing { get; set; }
 
         [Display(Name = "Fermeture officielle")]
         [DataType(DataType.DateTime)]
+        [Range(typeof(DateTime), "2000-01-01", "2050-12-31", ErrorMessage = "La date doit être comprise entre l'an 2000 et 2050.")]
         public DateTime? OfficialClosing { get; set; } // Nullable car pas encore fermée au début
 
 
@@ -49,29 +52,37 @@ namespace TP1.Models.Locations
         public virtual Driver Driver { get; set; }
 
         [Required(ErrorMessage = "Le nom est obligatoire.")]
-        [StringLength(20, ErrorMessage = "Veillez entrer un nom.")]
+        [StringLength(50, MinimumLength = 3, ErrorMessage = "Le nom doit avoir entre 3 et 50 caractères.")]
+        [RegularExpression(@"^[a-zA-ZÀ-ÿ\s\-]*$", ErrorMessage = "Le nom ne doit contenir que des lettres.")]
+        [Display(Name = "Nom")]
         public required string DriverLastname{ get; set; }
 
         [Required(ErrorMessage = "Le prénom est obligatoire.")]
-        [StringLength(20, ErrorMessage = "Veillez entrer un prénom.")]
+        [StringLength(30, MinimumLength = 3, ErrorMessage = "Le prénom doit avoir entre 3 et 30 caractères.")]
+        [RegularExpression(@"^[a-zA-ZÀ-ÿ\s\-]*$", ErrorMessage = "Le prénom ne doit contenir que des lettres.")]
+        [Display(Name = "Prénom")]
         public required string DriverFirstName { get; set; }
 
 
         [Required]
         [DisplayName("Driver's Email Address")]
         [DataType(DataType.EmailAddress)]
+        [StringLength(254, ErrorMessage = "L'adresse courriel ne peut pas dépasser 254 caractères.")]
+        [RegularExpression(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", ErrorMessage = "Le courriel doit contenir un domaine valide (ex: .com, .ca).")]
+        [EmailAddress(ErrorMessage = "Le format de l'adresse courriel n'est pas valide.")]
         public string? DriverEmailAddress { get; set; }
 
 
 
-        [Required]
+        [Required(ErrorMessage = "Le numéro de téléphone est obligatoire.")]
+        [RegularExpression(@"^(\(\d{3}\)\s\d{3}-\d{4}|\d{3}-\d{3}-\d{4}|\d{10})$",
+            ErrorMessage = "Formats acceptés : (555) 555-5555, 555-555-5555 ou 5555555555.")]
         [DisplayName("Driver's Phone number")]
         [DataType(DataType.PhoneNumber)]
         public string? PhoneNumber { get; set; }
 
         [Required(ErrorMessage = "Le numéro de permis est obligatoire.")]
-        [StringLength(15, MinimumLength = 5, ErrorMessage = "Le numéro doit comporter entre 5 et 15 caractères.")]
-        [RegularExpression(@"^[A-Z0-9-]+$", ErrorMessage = "Le format du numéro de permis est invalide (lettres, chiffres et tirets uniquement).")]
+        [RegularExpression(@"^[A-Z]\d{4}-\d{6}-\d{2}$", ErrorMessage = "Format invalide (Ex: A1234-121299-12).")]
         [Display(Name = "Driver Licence Number")]
         public string DriverLicenceNumber { get; set; }
 
