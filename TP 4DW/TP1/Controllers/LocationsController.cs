@@ -17,6 +17,7 @@ using TP1.Models.Locations;
 namespace TP1.Controllers
 {
     [Authorize(Roles = Roles.MANAGER + "," + Roles.ADMIN + "," + Roles.CLERK)]
+
     public class LocationsController(ApplicationDbContext context) : Controller
     {
         private readonly ApplicationDbContext Context = context;

@@ -10,19 +10,20 @@ using TP1.Models.Cars;
 
 namespace TP1.Controllers
 {
-    [Authorize(Roles = Roles.MANAGER + "," + Roles.ADMIN)]
+    //[Authorize(Roles = Roles.MANAGER + "," + Roles.ADMIN)]
 
 
     public class CarController(ApplicationDbContext context) : Controller
     {
         private readonly ApplicationDbContext Context = context;
-
+        [Authorize(Roles = Roles.CLERK + "," + Roles.MANAGER + "," + Roles.ADMIN)]
         [HttpGet]
         public IActionResult Index()
         {
             return RedirectToAction(nameof(ListAll));
         }
 
+        [Authorize(Roles = Roles.CLERK + "," + Roles.MANAGER + "," + Roles.ADMIN)]
 
         [HttpGet]
 
@@ -69,7 +70,7 @@ namespace TP1.Controllers
             await Context.SaveChangesAsync();
             return RedirectToAction(nameof(List), new { branchId = branchId });
         }
-
+        [Authorize(Roles = Roles.CLERK + "," + Roles.MANAGER + "," + Roles.ADMIN)]
         [HttpGet]
         public async Task<IActionResult> ListAll()
         {
@@ -95,6 +96,7 @@ namespace TP1.Controllers
             return View(cars);
         }
 
+        [Authorize(Roles = Roles.CLERK + "," + Roles.MANAGER + "," + Roles.ADMIN)]
         [HttpGet]
         public async Task<IActionResult> List(Guid branchId)
         {
@@ -111,6 +113,7 @@ namespace TP1.Controllers
             return View(branch.Cars.ToList());
         }
 
+        [Authorize(Roles = Roles.CLERK + "," + Roles.MANAGER + "," + Roles.ADMIN)]
         [HttpGet]
         public async Task<IActionResult> Edit(Guid id, Guid branchId)
         {
@@ -139,6 +142,7 @@ namespace TP1.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = Roles.CLERK + "," + Roles.MANAGER + "," + Roles.ADMIN)]
         [HttpPost]
         public async Task<IActionResult> Edit(CarEdit model, Guid branchId)
         {
@@ -177,8 +181,8 @@ namespace TP1.Controllers
             return RedirectToAction(nameof(List), new { branchId = branchId });
         }
 
-        [HttpGet]
         [Authorize(Roles = Roles.CLERK + "," + Roles.MANAGER + "," + Roles.ADMIN)]
+        [HttpGet]
         public async Task<IActionResult> Details(Guid id)
         {
             var car = await Context.Cars
@@ -196,8 +200,8 @@ namespace TP1.Controllers
         }
 
         // Ajouter une note à une voiture
-        [HttpGet]
         [Authorize(Roles = Roles.CLERK + "," + Roles.MANAGER + "," + Roles.ADMIN)]
+        [HttpGet]
         public async Task<IActionResult> AddNote(Guid id)
         {
             var car = await Context.Cars.FindAsync(id);
@@ -207,9 +211,8 @@ namespace TP1.Controllers
             ViewBag.CarNickname = car.Nickname;
             return View();
         }
-
-        [HttpPost]
         [Authorize(Roles = Roles.CLERK + "," + Roles.MANAGER + "," + Roles.ADMIN)]
+        [HttpPost]
         public async Task<IActionResult> AddNote(Guid id, string content)
         {
             var car = await Context.Cars.Include(c => c.Notes).FirstOrDefaultAsync(c => c.Id == id);

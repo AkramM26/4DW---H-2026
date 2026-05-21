@@ -15,7 +15,7 @@ public class BranchController(ApplicationDbContext context) : Controller
 {
     private readonly ApplicationDbContext Context = context;
 
-
+    [AllowAnonymous]
     [HttpGet]
     public IActionResult Index()
     {
@@ -40,7 +40,6 @@ public class BranchController(ApplicationDbContext context) : Controller
 
         return View(branches);
     }
-
     [HttpGet]
     public IActionResult Create()
     {
@@ -48,7 +47,6 @@ public class BranchController(ApplicationDbContext context) : Controller
     }
 
     [HttpPost]
-    [Authorize(Roles = Roles.ADMIN)]
     public async Task<IActionResult> Create(BranchCreate model)
     {
         if (!ModelState.IsValid) return View(model);
@@ -112,7 +110,7 @@ public class BranchController(ApplicationDbContext context) : Controller
 
         return RedirectToAction(nameof(List));
     }
-
+    [Authorize(Roles = Roles.ADMIN)]
     [HttpGet]
     public async Task<IActionResult> Delete(Guid branchId)
     {

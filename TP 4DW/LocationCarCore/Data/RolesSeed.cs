@@ -63,6 +63,29 @@ namespace LocationManagerCore.Data
                 await userManager.AddToRoleAsync(Admin, Roles.ADMIN);
             }
 
+
+            var Commis = await userManager.FindByNameAsync("Commis");
+
+            if (Commis == null)
+            {
+                // 1. Cherche si il existe déjà une succursale
+                var defaultBranch = await context.Branches.FirstOrDefaultAsync();
+
+                // 2. Si aucune n'existe, on en crée une (car sinon  un Admin ne pourra pas être créé)
+                if (defaultBranch == null)
+                {
+                    defaultBranch = Branch.Create(true, "Siège Social");
+                    context.Branches.Add(defaultBranch);
+                    await context.SaveChangesAsync();
+                }
+
+                // création d'un commis
+                Commis = AppUser.Create("Commis", "Commis", "commis@gmail.com");
+
+                await userManager.CreateAsync(Commis, "Commis1234*");
+                await userManager.AddToRoleAsync(Commis, Roles.CLERK);
+            }
+
         }
     }
 }
