@@ -10,7 +10,7 @@ using TP1.Models.Cars;
 
 namespace TP1.Controllers
 {
-    //[Authorize(Roles = Roles.MANAGER + "," + Roles.ADMIN)]
+    [Authorize(Roles = Roles.MANAGER + "," + Roles.ADMIN)]
 
 
     public class CarController(ApplicationDbContext context) : Controller
